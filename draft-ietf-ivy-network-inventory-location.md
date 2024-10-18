@@ -92,10 +92,7 @@ The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
 Additionally, it includes provisions for physical addresses or geo-
 location data (geographic coordinates).  The location model can
-extend the base network inventory 
-
-{{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location
-information.
+extend the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
 
 The Network Inventory location model is classified as a network
 configuration model (Section 4 of  {{?RFC8309}}).
@@ -333,4 +330,4 @@ aggregates the inventory data of the Network Elements (NEs) on the
 network. Usually the information about sites or equipment rooms is
 not detectable by network controller and configured manually.
 
-The authors wish to thank Mohamed Boucadair and many others for their helpful comments and suggestions. 
+The authors wish to thank Mohamed Boucadair and many others for their helpful comments and suggestions.
