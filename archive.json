@@ -1,0 +1,71 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2024-10-20T01:06:21.796162+00:00",
+  "repo": "ietf-ivy-wg/network-inventory-location",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "I_kwDONCC5aM6azPp8",
+      "title": "Timestamp and validity should also be added to \"Location\"  from  Adrian during WG adoption",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/1",
+      "state": "OPEN",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\r\nI\u2019m interested to see that the timestamp and validity are present under the geolocation part of the tree (good), except\u2026\r\n**Why don\u2019t they apply to more of the parts of the tree?** \r\n\r\nActually, I wasn\u2019t thinking about mobility (although there are fields in which inventory is mobile \u2013 military, emergency services, ad hoc, satellite).\r\nI was thinking about validity:\r\n-\tThis data was set up in 1856, the name of the country may have changed since then.\r\n-\tThis data depends on a satellite GPS system that may have become detuned since then.\r\n-\tThis data was set up when the company was independent before I was acquired by MegaCorp.\r\n\r\nA\r\n\r\n[https://mailarchive.ietf.org/arch/msg/inventory-yang/IRs24T4q0eCjGo5fK8v1OPepF0E/](url)\r\n",
+      "createdAt": "2024-10-18T10:23:13Z",
+      "updatedAt": "2024-10-18T10:23:13Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": []
+}
