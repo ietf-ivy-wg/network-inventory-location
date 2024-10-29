@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2024-10-27T01:05:45.616078+00:00",
+  "timestamp": "2024-10-29T01:02:47.270179+00:00",
   "repo": "ietf-ivy-wg/network-inventory-location",
   "labels": [
     {
@@ -63,6 +63,54 @@
       "body": "\r\nI\u2019m interested to see that the timestamp and validity are present under the geolocation part of the tree (good), except\u2026\r\n**Why don\u2019t they apply to more of the parts of the tree?** \r\n\r\nActually, I wasn\u2019t thinking about mobility (although there are fields in which inventory is mobile \u2013 military, emergency services, ad hoc, satellite).\r\nI was thinking about validity:\r\n-\tThis data was set up in 1856, the name of the country may have changed since then.\r\n-\tThis data depends on a satellite GPS system that may have become detuned since then.\r\n-\tThis data was set up when the company was independent before I was acquired by MegaCorp.\r\n\r\nA\r\n\r\n[https://mailarchive.ietf.org/arch/msg/inventory-yang/IRs24T4q0eCjGo5fK8v1OPepF0E/](url)\r\n",
       "createdAt": "2024-10-18T10:23:13Z",
       "updatedAt": "2024-10-18T10:23:13Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 2,
+      "id": "I_kwDONCC5aM6cEC7Z",
+      "title": "Suggestion to add usage of the YANG model and the nodes from Med",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/2",
+      "state": "OPEN",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "During WG adoption, Med made the suggestion:\r\n\r\nI\u2019d expect the document to first explain the intended usage of the existing data nodes. \r\nFor example, \r\n- how this will impact items in which a given location is referenced? \r\n- How one can retrieve the list of items that are associated with a given location? \r\n- How to proceed when the location is not valid? Etc.\r\n\r\nCheers,\r\nMed\r\n",
+      "createdAt": "2024-10-28T12:36:47Z",
+      "updatedAt": "2024-10-28T12:36:47Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 3,
+      "id": "I_kwDONCC5aM6cEEEL",
+      "title": "Place the model under \u201cnetwork-inventory\u201d top-level container defined in base inventory model?",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/3",
+      "state": "OPEN",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "During WG adoption, Italo made the comments:\r\n\r\nI have just a small comment (which can be addressed by the WG after adoption) about the location of the top-level container \u201clocations\u201d. IMHO, it could be placed under the \u201cnetwork-inventory\u201d top-level container defined in the base inventory model:\r\n\r\nOLD\r\n\r\nmodule: ietf-ni-location\r\n  +--rw locations\r\n\r\nNEW\r\n\r\nmodule: ietf-ni-location\r\n  augment /nwi:network-inventory:\r\n    +--rw locations\r\n\r\nItalo (as contributor)\r\n",
+      "createdAt": "2024-10-28T12:38:58Z",
+      "updatedAt": "2024-10-28T12:38:59Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 4,
+      "id": "I_kwDONCC5aM6cEHDE",
+      "title": "Med's review comments on the description and IETF format ",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/4",
+      "state": "OPEN",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Med's review comments on the description and IETF format during WG adoption\r\n\r\nI already reviewed a previous version of this document. Here are some quick additional comments:\r\n\r\n\r\n  *   NIT\r\n\r\nOLD:\r\n\r\nThe location model can  extend the base network inventory\r\n\r\n   [I-D.ietf-ivy-network-inventory-yang] to enrich NEs with location\r\n\r\n   information.\r\n\r\nNEW:\r\n\r\nThe location model augments\r\n\r\n   the base network inventory\r\n\r\n   [I-D.ietf-ivy-network-inventory-yang] to enrich NEs with location\r\n\r\n   information.\r\n\r\n\r\n  *   NIT\r\n\r\nOLD:\r\n\r\n   The Network Inventory location model is classified as a network\r\n\r\n   configuration model (Section 4 of [RFC8309]).\r\n\r\nNEW:\r\n\r\n   The Network Inventory location model is classified as a network\r\n\r\n   model (Section 3.5.1 of [I-D.ietf-netmod-rfc8407bis]).\r\n\r\n\r\n  *   Question:\r\n\r\nCURRENT:\r\n\r\n   The Network Inventory location YANG model conforms to the Network\r\n\r\n   Management Datastore Architecture (NMDA) [RFC8342].\r\n\r\nPer the IETF guidelines, new models should comply with 8342. What is actually important to highlight is the following:\r\n\r\n\"Designers SHOULD describe and justify any NMDA exceptions in detail, such as the use of separate subtrees and/or separate leafs.\"\r\n\r\nI guess this can be revisited once the module is stable.\r\n\r\n\r\n  *   Clarification (many occurrences): not sure how these two are related? Whether they are redundant? Etc.\r\n\r\nCURRENT:\r\n\r\n\r\n        |  +--rw name?               string\r\n\r\n        |  +--rw alias?              string\r\n\r\n\r\n  *   Security section: Please follow the updated template at https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-16#name-security-considerations-sect.\r\n\r\n\r\n  *   IANA section: Please update the following to refer to 6020:\r\n\r\n\r\nOLD:\r\n   This document registers a YANG module in the \"YANG Module Names\"\r\n   registry[RFC7950] .\r\n\r\nNEW:\r\n\r\n   This document registers a YANG module in the \"YANG Module Names\"\r\n\r\n   Registry [RFC6020] .\r\nCheers,\r\nMed",
+      "createdAt": "2024-10-28T12:44:12Z",
+      "updatedAt": "2024-10-28T12:44:13Z",
       "closedAt": null,
       "comments": []
     }
