@@ -65,8 +65,8 @@ location information with different granularity levels for
 inventoried network elements.
 
 Accurate location information is useful for network planning,
-deployment, and maintenance.  However, such information cannot be
-obtained or verified from the Network Elements themselves.  This
+deployment, and maintenance. However, such information cannot be
+obtained or verified from the Network Elements themselves. This
 document defines a location model for network inventory that extends
 the base inventory with comprehensive location data.
 
@@ -77,27 +77,27 @@ the base inventory with comprehensive location data.
 NEs can be grouped by location to provide more information for
 network planning, deployment, and maintenance (e.g., easily locate
 problematic NEs, optimize network resources, or help planning
-forecasts).  The location can reflect outdoor or indoor information.
+forecasts). The location can reflect outdoor or indoor information.
 An indoor location may be represented as a building, room, or other
-similar organizational structures.  Outdoor locations can be walls,
+similar organizational structures. Outdoor locations can be walls,
 poles, or other mount places.
 
 The information about sites, equipment rooms, and other more precise
 locations is critical, but it cannot be automatically populated and
-retrieved from network elements (NEs).  Instead, it is usually
+retrieved from network elements (NEs). Instead, it is usually
 configured manually.
 
 The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
 Additionally, it includes provisions for physical addresses or geo-
-location data (geographic coordinates).  The location model augments the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
+location data (geographic coordinates). The location model augments the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
 
 The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?I-D.ietf-netmod-rfc8407bis}}).
 
 The YANG data model in this document conforms to the Network
 Management Datastore Architecture (NMDA) defined in {{!RFC8342}}.
 
-Note: The NMDA design needs to be revisited once the module is stable per (Section 4.23.2 of  {{?I-D.ietf-netmod-rfc8407bis}}).
+Note: The NMDA design needs to be revisited once the module is stable per (Section 4.23.2 of {{?I-D.ietf-netmod-rfc8407bis}}).
 
 ## Editorial Note (To be removed by RFC Editor)
 
@@ -107,7 +107,7 @@ This document contains placeholder values that need to be replaced with finalize
 
 Please apply the following replacements:
 
-* XXXX --> the assigned RFC number for this I-D
+* XXXX --> the assigned RFC number for this document
 * AAAA --> the assigned RFC number for {{!I-D.ietf-ivy-network-inventory-yang}}
 
 ## Terminology and Notations
@@ -135,14 +135,14 @@ The "location" list is generalized to support a variety of geographic
 location, such as sites, rooms, buildings.
 
 A site represents a general geographic location to group a set of NEs
-and corresponding inventory components.  NEs, racks, equipment rooms,
+and corresponding inventory components. NEs, racks, equipment rooms,
 and buildings can be grouped within a site.
 
 A room is a facility, a space for network elements and other
 equipment (such as servers, storage) with power supply systems, air
 conditioning system, etc.
 
-Locations can be nested to form a hierarchy.  For example, buildings
+Locations can be nested to form a hierarchy. For example, buildings
 may be within a site, and a room may be within a building.
 
 The "location-type" is defined as a YANG identity to identify the
@@ -172,14 +172,14 @@ building, etc.
 # Rack
 
 "racks" represent physical equipment racks in which NEs can be
-installed, which facilitate device maintenance.  Through "rack-
+installed, which facilitate device maintenance. Through "rack-
 location", each rack can be assigned to a site or a specific location
 within a site, such as an equipment room.
 
 Each rack is assigned a unique ID and a name in the context of a
-facility, e.g. a site.  A rack may have some specific attributes,
+facility, e.g. a site. A rack may have some specific attributes,
 such as appearance-related attributes and electricity-related
-attributes.  The height, depth and width are described by Figure 2
+attributes. The height, depth and width are described by Figure 2
 (please consider that the door of the rack is facing the user).
 
 Note: Further discussion is needed to decide whether to separate
@@ -249,8 +249,7 @@ Max-voltage: the maximum voltage supported by the rack.
 
 # YANG Data model for Network Inventory Location
 
-The "ietf-ni-location" module uses types defined in {{!RFC9179}},
-   {{!I-D.ietf-ivy-network-inventory-yang}}.
+The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~~~~~~~
 <CODE BEGINS> file "ietf-ni-location@2025-04-17.yang"
@@ -266,7 +265,7 @@ The "ietf-ni-location" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 NETCONF {{!RFC6241}} or RESTCONF {{!RFC8040}}. These protocols have to
 use a secure transport layer (e.g., SSH {{!RFC6242}}, TLS {{!RFC8446}}, and
-QUIC {{!RFC9000}}) and have to use mutual authentication. 
+QUIC {{!RFC9000}}) and have to use mutual authentication.
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
 provides the means to restrict access for particular NETCONF or
@@ -275,8 +274,8 @@ RESTCONF protocol operations and content.
 
 There are a number of data nodes defined in this YANG module that are
 writable/creatable/deletable (i.e., config true, which is the
-default).  All writable data nodes are likely to be reasonably sensitive or vulnerable
-in some network environments.  Write operations (e.g., edit-config)
+default). All writable data nodes are likely to be reasonably sensitive or vulnerable
+in some network environments. Write operations (e.g., edit-config)
 and delete operations to these data nodes without proper protection
 or authentication can have a negative effect on network operations.
 The following subtrees and data nodes have particular
@@ -285,9 +284,9 @@ sensitivities/vulnerabilities:
 'locations': The list may be used to track the set of network elements.
 
 Some of the readable data nodes in this YANG module may be considered
-sensitive or vulnerable in some network environments.  It is thus
+sensitive or vulnerable in some network environments. It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes.  Specifically, the following
+notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
 Since this module identifies locations, authors using this module
@@ -331,4 +330,3 @@ network. Usually the information about sites or equipment rooms is
 not detectable by network controller and configured manually.
 
 The authors wish to thank Mohamed Boucadair and many others for their helpful comments and suggestions.
-
