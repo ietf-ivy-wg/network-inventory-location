@@ -16,14 +16,13 @@ location (e.g., site, room, rack, geo-location data), which provides
 location information with different granularity levels for
 inventoried network elements. 
        Accurate location information is useful for network planning,
-deployment, and maintenance.  However, such information cannot be
-obtained or verified from the Network Elements themselves.  This
+deployment, and maintenance. However, such information cannot be
+obtained or verified from the Network Elements themselves. This
 document defines a location model for network inventory that extends
 the base inventory with comprehensive location data. 
     " name="description">
 <meta content="xml2rfc 3.28.1" name="generator">
 <meta content="Automation" name="keyword">
-<meta content="Network Digital Map" name="keyword">
 <meta content="Network Inventory" name="keyword">
 <meta content="Network Operation" name="keyword">
 <meta content="Topology" name="keyword">
@@ -1116,8 +1115,8 @@ location (e.g., site, room, rack, geo-location data), which provides
 location information with different granularity levels for
 inventoried network elements.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 <p id="section-abstract-2">Accurate location information is useful for network planning,
-deployment, and maintenance.  However, such information cannot be
-obtained or verified from the Network Elements themselves.  This
+deployment, and maintenance. However, such information cannot be
+obtained or verified from the Network Elements themselves. This
 document defines a location model for network inventory that extends
 the base inventory with comprehensive location data.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
@@ -1241,23 +1240,22 @@ the base inventory with comprehensive location data.<a href="#section-abstract-2
 <p id="section-1-1">NEs can be grouped by location to provide more information for
 network planning, deployment, and maintenance (e.g., easily locate
 problematic NEs, optimize network resources, or help planning
-forecasts).  The location can reflect outdoor or indoor information.
+forecasts). The location can reflect outdoor or indoor information.
 An indoor location may be represented as a building, room, or other
-similar organizational structures.  Outdoor locations can be walls,
+similar organizational structures. Outdoor locations can be walls,
 poles, or other mount places.<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">The information about sites, equipment rooms, and other more precise
 locations is critical, but it cannot be automatically populated and
-retrieved from network elements (NEs).  Instead, it is usually
+retrieved from network elements (NEs). Instead, it is usually
 configured manually.<a href="#section-1-2" class="pilcrow">¶</a></p>
 <p id="section-1-3">The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
 Additionally, it includes provisions for physical addresses or geo-
-location data (geographic coordinates).  The location model can
-extend the base network inventory <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span> to enrich NEs with location information.<a href="#section-1-3" class="pilcrow">¶</a></p>
-<p id="section-1-4">The Network Inventory location model is classified as a network
-configuration model (Section 4 of  <span>[<a href="#RFC8309" class="cite xref">RFC8309</a>]</span>).<a href="#section-1-4" class="pilcrow">¶</a></p>
+location data (geographic coordinates). The location model augments the base network inventory <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span> to enrich NEs with location information.<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-4">The Network Inventory location model is classified as a network model (Section 3.5.1 of <span>[<a href="#I-D.ietf-netmod-rfc8407bis" class="cite xref">I-D.ietf-netmod-rfc8407bis</a>]</span>).<a href="#section-1-4" class="pilcrow">¶</a></p>
 <p id="section-1-5">The YANG data model in this document conforms to the Network
 Management Datastore Architecture (NMDA) defined in <span>[<a href="#RFC8342" class="cite xref">RFC8342</a>]</span>.<a href="#section-1-5" class="pilcrow">¶</a></p>
+<p id="section-1-6">Note: The NMDA design needs to be revisited once the module is stable per (Section 4.23.2 of <span>[<a href="#I-D.ietf-netmod-rfc8407bis" class="cite xref">I-D.ietf-netmod-rfc8407bis</a>]</span>).<a href="#section-1-6" class="pilcrow">¶</a></p>
 <div id="editorial-note-to-be-removed-by-rfc-editor">
 <section id="section-1.1">
         <h3 id="name-editorial-note-to-be-remove">
@@ -1268,7 +1266,7 @@ Management Datastore Architecture (NMDA) defined in <span>[<a href="#RFC8342" cl
 <p id="section-1.1-3">Please apply the following replacements:<a href="#section-1.1-3" class="pilcrow">¶</a></p>
 <ul class="normal">
 <li class="normal" id="section-1.1-4.1">
-            <p id="section-1.1-4.1.1">XXXX --&gt; the assigned RFC number for this I-D<a href="#section-1.1-4.1.1" class="pilcrow">¶</a></p>
+            <p id="section-1.1-4.1.1">XXXX --&gt; the assigned RFC number for this document<a href="#section-1.1-4.1.1" class="pilcrow">¶</a></p>
 </li>
           <li class="normal" id="section-1.1-4.2">
             <p id="section-1.1-4.2.1">AAAA --&gt; the assigned RFC number for <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span><a href="#section-1.1-4.2.1" class="pilcrow">¶</a></p>
@@ -1307,7 +1305,7 @@ here:<a href="#section-1.2-2.5.1" class="pilcrow">¶</a></p>
           <li class="normal" id="section-1.2-2.7">
             <p id="section-1.2-2.7.1">state data
 The tree diagram used in this document follows the notation defined
-in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
+in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>.<a href="#section-1.2-2.7.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 <p id="section-1.2-3">Also, this document uses terms defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-1.2-3" class="pilcrow">¶</a></p>
@@ -1323,12 +1321,12 @@ in <span>[<a href="#RFC8340" class="cite xref">RFC8340</a>]</span>..<a href="#se
 <p id="section-2-1">The "location" list is generalized to support a variety of geographic
 location, such as sites, rooms, buildings.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">A site represents a general geographic location to group a set of NEs
-and corresponding inventory components.  NEs, racks, equipment rooms,
+and corresponding inventory components. NEs, racks, equipment rooms,
 and buildings can be grouped within a site.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">A room is a facility, a space for network elements and other
 equipment (such as servers, storage) with power supply systems, air
 conditioning system, etc.<a href="#section-2-3" class="pilcrow">¶</a></p>
-<p id="section-2-4">Locations can be nested to form a hierarchy.  For example, buildings
+<p id="section-2-4">Locations can be nested to form a hierarchy. For example, buildings
 may be within a site, and a room may be within a building.<a href="#section-2-4" class="pilcrow">¶</a></p>
 <p id="section-2-5">The "location-type" is defined as a YANG identity to identify the
 type of an inventory location, which may be site, equipment room,
@@ -1365,13 +1363,13 @@ building, etc.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <a href="#section-3" class="section-number selfRef">3. </a><a href="#name-rack" class="section-name selfRef">Rack</a>
       </h2>
 <p id="section-3-1">"racks" represent physical equipment racks in which NEs can be
-installed, which facilitate device maintenance.  Through "rack-
+installed, which facilitate device maintenance. Through "rack-
 location", each rack can be assigned to a site or a specific location
 within a site, such as an equipment room.<a href="#section-3-1" class="pilcrow">¶</a></p>
 <p id="section-3-2">Each rack is assigned a unique ID and a name in the context of a
-facility, e.g. a site.  A rack may have some specific attributes,
+facility, e.g. a site. A rack may have some specific attributes,
 such as appearance-related attributes and electricity-related
-attributes.  The height, depth and width are described by Figure 2
+attributes. The height, depth and width are described by Figure 2
 (please consider that the door of the rack is facing the user).<a href="#section-3-2" class="pilcrow">¶</a></p>
 <p id="section-3-3">Note: Further discussion is needed to decide whether to separate
 "racks" from the list of "location".<a href="#section-3-3" class="pilcrow">¶</a></p>
@@ -1549,10 +1547,9 @@ module: ietf-ni-location
       <h2 id="name-yang-data-model-for-network">
 <a href="#section-5" class="section-number selfRef">5. </a><a href="#name-yang-data-model-for-network" class="section-name selfRef">YANG Data model for Network Inventory Location</a>
       </h2>
-<p id="section-5-1">The "ietf-ni-location" module uses types defined in <span>[<a href="#RFC9179" class="cite xref">RFC9179</a>]</span>,
-   <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-1">The "ietf-ni-location" module uses types defined in <span>[<a href="#RFC9179" class="cite xref">RFC9179</a>]</span>, <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>.<a href="#section-5-1" class="pilcrow">¶</a></p>
 <div class="breakable sourcecode" id="section-5-2">
-<pre>&lt;CODE BEGINS&gt; file "ietf-ni-location@2024-08-19.yang"
+<pre>&lt;CODE BEGINS&gt; file "ietf-ni-location@2025-04-17.yang"
 
 =============== NOTE: '\' line wrapping per RFC 8792 ================
 
@@ -1900,32 +1897,32 @@ module ietf-ni-location {
 <a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-6-1">This section uses the template described in <span><a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-23#section-3.7" class="relref">Section 3.7</a> of [<a href="#I-D.ietf-netmod-rfc8407bis" class="cite xref">I-D.ietf-netmod-rfc8407bis</a>]</span>.<a href="#section-6-1" class="pilcrow">¶</a></p>
-<p id="section-6-2">The YANG module specified in this document defines schema for data
-that is designed to be accessed via network management protocols such
- as NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> or RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>.  The lowest NETCONF layer
-is the secure transport layer, and the mandatory-to-implement secure
-transport is Secure Shell (SSH) <span>[<a href="#RFC6242" class="cite xref">RFC6242</a>]</span>.  The lowest RESTCONF layer
-is HTTPS, and the mandatory-to-implement secure transport is TLS
- <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-2">The "ietf-ni-location" YANG module defines a data model that is
+designed to be accessed via YANG-based management protocols, such as
+NETCONF <span>[<a href="#RFC6241" class="cite xref">RFC6241</a>]</span> or RESTCONF <span>[<a href="#RFC8040" class="cite xref">RFC8040</a>]</span>. These protocols have to
+use a secure transport layer (e.g., SSH <span>[<a href="#RFC6242" class="cite xref">RFC6242</a>]</span>, TLS <span>[<a href="#RFC8446" class="cite xref">RFC8446</a>]</span>, and
+QUIC <span>[<a href="#RFC9000" class="cite xref">RFC9000</a>]</span>) and have to use mutual authentication.<a href="#section-6-2" class="pilcrow">¶</a></p>
 <p id="section-6-3">The Network Configuration Access Control Model (NACM) <span>[<a href="#RFC8341" class="cite xref">RFC8341</a>]</span>
 provides the means to restrict access for particular NETCONF or
 RESTCONF users to a preconfigured subset of all available NETCONF or
 RESTCONF protocol operations and content.<a href="#section-6-3" class="pilcrow">¶</a></p>
 <p id="section-6-4">There are a number of data nodes defined in this YANG module that are
 writable/creatable/deletable (i.e., config true, which is the
-default).  These data nodes may be considered sensitive or vulnerable
-in some network environments.  Write operations (e.g., edit-config)
+default). All writable data nodes are likely to be reasonably sensitive or vulnerable
+in some network environments. Write operations (e.g., edit-config)
 and delete operations to these data nodes without proper protection
 or authentication can have a negative effect on network operations.
-Specifically, the following subtrees and data nodes have particular
+The following subtrees and data nodes have particular
 sensitivities/vulnerabilities:<a href="#section-6-4" class="pilcrow">¶</a></p>
-<p id="section-6-5">Some of the readable data nodes in this YANG module may be considered
-sensitive or vulnerable in some network environments.  It is thus
+<p id="section-6-5">'locations': The list may be used to track the set of network elements.<a href="#section-6-5" class="pilcrow">¶</a></p>
+<p id="section-6-6">Some of the readable data nodes in this YANG module may be considered
+sensitive or vulnerable in some network environments. It is thus
 important to control read access (e.g., via get, get-config, or
-notification) to these data nodes.  Specifically, the following
-subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-6-5" class="pilcrow">¶</a></p>
-<p id="section-6-6">'locations':
-The list may be used to track the set of network elements.<a href="#section-6-6" class="pilcrow">¶</a></p>
+notification) to these data nodes. Specifically, the following
+subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-6-6" class="pilcrow">¶</a></p>
+<p id="section-6-7">Since this module identifies locations, authors using this module
+SHOULD consider any privacy issues that may arise when the data
+is readable (e.g., customer device locations, etc).<a href="#section-6-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
@@ -1943,13 +1940,13 @@ XML:  N/A; the requested URI is an XML namespace.
 </pre><a href="#section-7-2" class="pilcrow">¶</a>
 </div>
 <p id="section-7-3">IANA is requested to register the following YANG module in the "YANG Module
-Names" registry <span>[<a href="#RFC6020" class="cite xref">RFC6020</a>]</span> within the "YANG Parameters" registry group:<a href="#section-7-3" class="pilcrow">¶</a></p>
+Names" subregistry <span>[<a href="#RFC6020" class="cite xref">RFC6020</a>]</span> within the "YANG Parameters" registry.<a href="#section-7-3" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-7-4">
 <pre>
-Name:  ietf-network-inventory-topology
+Name:  ietf-ni-location
+Maintained by IANA?  N
 Namespace:  urn:ietf:params:xml:ns:yang:ietf-ni-location
 Prefix:  nil
-Maintained by IANA?  N
 Reference:  RFC XXXX
 </pre><a href="#section-7-4" class="pilcrow">¶</a>
 </div>
@@ -2006,6 +2003,10 @@ Reference:  RFC XXXX
         <dd>
 <span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8446">https://www.rfc-editor.org/rfc/rfc8446</a>&gt;</span>. </dd>
 <dd class="break"></dd>
+<dt id="RFC9000">[RFC9000]</dt>
+        <dd>
+<span class="refAuthor">Iyengar, J., Ed.</span> and <span class="refAuthor">M. Thomson, Ed.</span>, <span class="refTitle">"QUIC: A UDP-Based Multiplexed and Secure Transport"</span>, <span class="seriesInfo">RFC 9000</span>, <span class="seriesInfo">DOI 10.17487/RFC9000</span>, <time datetime="2021-05" class="refDate">May 2021</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9000">https://www.rfc-editor.org/rfc/rfc9000</a>&gt;</span>. </dd>
+<dd class="break"></dd>
 <dt id="RFC9179">[RFC9179]</dt>
       <dd>
 <span class="refAuthor">Hopps, C.</span>, <span class="refTitle">"A YANG Grouping for Geographic Locations"</span>, <span class="seriesInfo">RFC 9179</span>, <span class="seriesInfo">DOI 10.17487/RFC9179</span>, <time datetime="2022-02" class="refDate">February 2022</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9179">https://www.rfc-editor.org/rfc/rfc9179</a>&gt;</span>. </dd>
@@ -2026,10 +2027,6 @@ Reference:  RFC XXXX
 <dt id="I-D.ietf-netmod-rfc8407bis">[I-D.ietf-netmod-rfc8407bis]</dt>
         <dd>
 <span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Boucadair, M.</span>, and <span class="refAuthor">Q. Wu</span>, <span class="refTitle">"Guidelines for Authors and Reviewers of Documents Containing YANG Data Models"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netmod-rfc8407bis-23</span>, <time datetime="2025-04-15" class="refDate">15 April 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-23">https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-23</a>&gt;</span>. </dd>
-<dd class="break"></dd>
-<dt id="RFC8309">[RFC8309]</dt>
-        <dd>
-<span class="refAuthor">Wu, Q.</span>, <span class="refAuthor">Liu, W.</span>, and <span class="refAuthor">A. Farrel</span>, <span class="refTitle">"Service Models Explained"</span>, <span class="seriesInfo">RFC 8309</span>, <span class="seriesInfo">DOI 10.17487/RFC8309</span>, <time datetime="2018-01" class="refDate">January 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8309">https://www.rfc-editor.org/rfc/rfc8309</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC8340">[RFC8340]</dt>
       <dd>
