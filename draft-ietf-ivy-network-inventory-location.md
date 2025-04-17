@@ -14,7 +14,6 @@ workgroup: "Network Inventory YANG"
 keyword:
 
  - Automation
- - Network Digital Map
  - Network Inventory
  - Network Operation
  - Topology
@@ -91,14 +90,14 @@ configured manually.
 The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
 Additionally, it includes provisions for physical addresses or geo-
-location data (geographic coordinates).  The location model can
-extend the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
+location data (geographic coordinates).  The location model augments the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
 
-The Network Inventory location model is classified as a network
-configuration model (Section 4 of  {{?RFC8309}}).
+The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?I-D.ietf-netmod-rfc8407bis}}).
 
 The YANG data model in this document conforms to the Network
 Management Datastore Architecture (NMDA) defined in {{!RFC8342}}.
+
+Note: The NMDA design needs to be revisited once the module is stable per (Section 4.23.2 of  {{?I-D.ietf-netmod-rfc8407bis}}).
 
 ## Editorial Note (To be removed by RFC Editor)
 
@@ -126,7 +125,7 @@ here:
 *  configuration data
 *  state data
 The tree diagram used in this document follows the notation defined
-in {{?RFC8340}}..
+in {{?RFC8340}}.
 
  Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
 
@@ -254,7 +253,7 @@ The "ietf-ni-location" module uses types defined in {{!RFC9179}},
    {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~~~~~~~
-<CODE BEGINS> file "ietf-ni-location@2024-08-19.yang"
+<CODE BEGINS> file "ietf-ni-location@2025-04-17.yang"
 {::include-fold ./ietf-ni-location.yang}
 <CODE ENDS>
 ~~~~~~~~~~
@@ -263,13 +262,11 @@ The "ietf-ni-location" module uses types defined in {{!RFC9179}},
 
 This section uses the template described in {{Section 3.7 of ?I-D.ietf-netmod-rfc8407bis}}.
 
-The YANG module specified in this document defines schema for data
-that is designed to be accessed via network management protocols such
- as NETCONF {{!RFC6241}} or RESTCONF {{!RFC8040}}.  The lowest NETCONF layer
-is the secure transport layer, and the mandatory-to-implement secure
-transport is Secure Shell (SSH) {{!RFC6242}}.  The lowest RESTCONF layer
-is HTTPS, and the mandatory-to-implement secure transport is TLS
- {{!RFC8446}}.
+The "ietf-ni-location" YANG module defines a data model that is
+designed to be accessed via YANG-based management protocols, such as
+NETCONF {{!RFC6241}} or RESTCONF {{!RFC8040}}. These protocols have to
+use a secure transport layer (e.g., SSH {{!RFC6242}}, TLS {{!RFC8446}}, and
+QUIC {{!RFC9000}}) and have to use mutual authentication. 
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
 provides the means to restrict access for particular NETCONF or
@@ -278,12 +275,14 @@ RESTCONF protocol operations and content.
 
 There are a number of data nodes defined in this YANG module that are
 writable/creatable/deletable (i.e., config true, which is the
-default).  These data nodes may be considered sensitive or vulnerable
+default).  All writable data nodes are likely to be reasonably sensitive or vulnerable
 in some network environments.  Write operations (e.g., edit-config)
 and delete operations to these data nodes without proper protection
 or authentication can have a negative effect on network operations.
-Specifically, the following subtrees and data nodes have particular
+The following subtrees and data nodes have particular
 sensitivities/vulnerabilities:
+
+'locations': The list may be used to track the set of network elements.
 
 Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments.  It is thus
@@ -291,8 +290,9 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes.  Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-'locations':
-The list may be used to track the set of network elements.
+Since this module identifies locations, authors using this module
+SHOULD consider any privacy issues that may arise when the data
+is readable (e.g., customer device locations, etc).
 
 # IANA Considerations
 
@@ -306,13 +306,13 @@ XML:  N/A; the requested URI is an XML namespace.
 ~~~~
 
 IANA is requested to register the following YANG module in the "YANG Module
-Names" registry {{!RFC6020}} within the "YANG Parameters" registry group:
+Names" subregistry {{!RFC6020}} within the "YANG Parameters" registry.
 
 ~~~~
-Name:  ietf-network-inventory-topology
+Name:  ietf-ni-location
+Maintained by IANA?  N
 Namespace:  urn:ietf:params:xml:ns:yang:ietf-ni-location
 Prefix:  nil
-Maintained by IANA?  N
 Reference:  RFC XXXX
 ~~~~
 
@@ -331,3 +331,4 @@ network. Usually the information about sites or equipment rooms is
 not detectable by network controller and configured manually.
 
 The authors wish to thank Mohamed Boucadair and many others for their helpful comments and suggestions.
+
