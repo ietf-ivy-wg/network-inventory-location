@@ -5,14 +5,14 @@
 Network Inventory YANG                                             B. Wu
 Internet-Draft                                                    Huawei
 Intended status: Standards Track                              S. Belotti
-Expires: 21 April 2025                                             Nokia
+Expires: 19 October 2025                                           Nokia
                                                           J.-F. Bouquier
                                                                 Vodafone
                                                             F. Peruzzini
                                                                      TIM
                                                                P. Bedard
                                                                    Cisco
-                                                         18 October 2024
+                                                           17 April 2025
 
 
             A YANG Data Model for Network Inventory Location
@@ -57,11 +57,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 21 April 2025.
+   This Internet-Draft will expire on 19 October 2025.
 
 Copyright Notice
 
-   Copyright (c) 2024 IETF Trust and the persons identified as the
+   Copyright (c) 2025 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -352,6 +352,11 @@ Table of Contents
      namespace "urn:ietf:params:xml:ns:yang:ietf-ni-location";
      prefix nil;
 
+     import ietf-yang-types {
+       prefix yang;
+       reference
+         "RFC 6991: Common YANG Data Types";
+     }
      import ietf-network-inventory {
        prefix nwi;
        reference
@@ -383,7 +388,7 @@ Table of Contents
        "This YANG module defines a model for Network Inventory
         location.
 
-        Copyright (c) 2024 IETF Trust and the persons
+        Copyright (c) 2025 IETF Trust and the persons
         identified as authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -396,7 +401,7 @@ Table of Contents
         This version of this YANG module is part of RFC XXXX; see
         the RFC itself for full legal notices.";
 
-     revision 2024-08-19 {
+     revision 2025-04-17 {
        description
          "Initial version";
        reference
@@ -406,36 +411,12 @@ Table of Contents
      }
 
      /* Identities */
-
-     identity inventory-location-type {
-       description
-         "Base identity for network inventory location types, e.g. site,
-          room, building, and floor.";
-     }
-
-     identity site {
-       base inventory-location-type;
-       description
-         "Indicates site as location type.";
-     }
-
-     identity room {
-       base inventory-location-type;
-       description
-         "Indicates equipment room as location type.";
-     }
-
-     identity building {
-       base inventory-location-type;
-       description
-         "Indicates building as location type.";
-     }
-
      /* Typedef */
 
      typedef ni-location-ref {
        type leafref {
-         path "/nil:locations/nil:location/nil:id";
+         path
+           "/nwi:network-inventory/nil:locations/nil:location/nil:id";
        }
        description
          "This type is used by data models that need to reference
@@ -444,7 +425,7 @@ Table of Contents
 
      /* Grouping */
 
-     grouping physical-address-grouping {
+     grouping physical-address {
        description
          "The grouping of the physical address.";
        container physical-address {
@@ -483,48 +464,69 @@ Table of Contents
        }
      }
 
-     grouping locations-grouping {
+     grouping locations {
        description
          "The grouping of the locations.";
-       list location {
-         key "id";
+       container locations {
          description
-           "The list of locations within the network.";
-         leaf id {
-           type string;
+           "The container for the NE location information.";
+         list location {
+           key "id";
            description
-             "An identifier of the location.";
-         }
-         uses nwi:common-entity-attributes;
-         leaf type {
-           type identityref {
-             base inventory-location-type;
+             "The list of locations within the network.";
+           leaf id {
+             type string;
+             description
+               "An identifier of the location.";
            }
-           description
-             "The type of network inventory location, e.g.
-              equipment room, building, or site.";
-         }
-         leaf parent {
-           type leafref {
-             path "../../location/id";
+           uses nwi:common-entity-attributes;
+           leaf type {
+             type string;
+             description
+               "The type of network inventory location, e.g.
+                equipment room, building, or site.
+
+                This allows operators to flexibly define custom location
+                types (e.g., 'pole', 'roof', 'floor') based on their
+                specific network scenarios without requiring model
+                extensions. String-based types enable dynamic adaptation
+                to heterogeneous organizational naming conventions.";
            }
-           description
-             "The name of the location that physically contains this
-              location.";
-         }
-         leaf-list child {
-           type leafref {
-             path "../../location/id";
+           leaf parent {
+             type leafref {
+               path "../../location/id";
+             }
+             description
+               "The name of the location that physically contains this
+                location.";
            }
-           description
-             "The name of the contained child locations.";
+           leaf-list child {
+             type leafref {
+               path "../../location/id";
+             }
+             description
+               "The name of the contained child locations.";
+           }
+           leaf timestamp {
+             type yang:date-and-time;
+             description
+               "Reference time when location was recorded.";
+           }
+           leaf valid-until {
+             type yang:date-and-time;
+             description
+               "The timestamp for which this location is valid until.
+                If unspecified, the location has no specific
+                expiration time.";
+           }
+           uses physical-address;
+           uses geo:geo-location;
          }
-         uses physical-address-grouping;
-         uses geo:geo-location;
+         uses racks;
        }
      }
 
-     grouping rack-grouping {
+     grouping racks {
        description
          "The attributes of the rack.";
        container racks {
@@ -626,11 +628,23 @@ Table of Contents
                   the network element and contained by the rack.";
              }
            }
+           leaf timestamp {
+             type yang:date-and-time;
+             description
+               "Reference time when location was recorded.";
+           }
+           leaf valid-until {
+             type yang:date-and-time;
+             description
+               "The timestamp for which this location is valid until.
+                If unspecified, the location has no specific
+                expiration time.";
+           }
          }
        }
      }
 
-     grouping locations-ref-grouping {
+     grouping locations-ref {
        description
          "The attributes of the locations.";
        container locations {
@@ -643,7 +657,7 @@ Table of Contents
          }
          leaf rack {
            type leafref {
-             path "/nil:locations/nil:racks"
+             path "/nwi:network-inventory/nil:locations/nil:racks"
                 + "/nil:rack/nil:id";
            }
            description
@@ -652,19 +666,18 @@ Table of Contents
        }
      }
 
-     container locations {
+     augment "/nwi:network-inventory" {
        description
-         "The top-level container for the NE location information.";
-       uses locations-grouping;
-       uses rack-grouping;
+         "Provides location information for network inventory.";
+       uses locations;
      }
 
      augment
        "/nwi:network-inventory/nwi:network-elements/nwi:network-element\
                                                                      " {
          description
-           "Provides location information for network inventory.";
-         uses locations-ref-grouping;
+           "Augment network element with location information.";
+         uses locations-ref;
      }
    }
    <CODE ENDS>
@@ -731,11 +744,11 @@ Table of Contents
 
    [I-D.ietf-ivy-network-inventory-yang]
               Yu, C., Belotti, S., Bouquier, J., Peruzzini, F., and P.
-              Bedard, "A YANG Data Model for Network Inventory", Work in
-              Progress, Internet-Draft, draft-ietf-ivy-network-
-              inventory-yang-03, 7 July 2024,
+              Bedard, "A Base YANG Data Model for Network Inventory",
+              Work in Progress, Internet-Draft, draft-ietf-ivy-network-
+              inventory-yang-05, 28 February 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ivy-
-              network-inventory-yang-03>.
+              network-inventory-yang-05>.
 
    [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
               DOI 10.17487/RFC3688, January 2004,
@@ -795,9 +808,9 @@ Table of Contents
               Bierman, A., Boucadair, M., and Q. Wu, "Guidelines for
               Authors and Reviewers of Documents Containing YANG Data
               Models", Work in Progress, Internet-Draft, draft-ietf-
-              netmod-rfc8407bis-18, 11 October 2024,
+              netmod-rfc8407bis-23, 15 April 2025,
               <https://datatracker.ietf.org/doc/html/draft-ietf-netmod-
-              rfc8407bis-18>.
+              rfc8407bis-23>.
 
    [RFC8309]  Wu, Q., Liu, W., and A. Farrel, "Service Models
               Explained", RFC 8309, DOI 10.17487/RFC8309, January 2018,
