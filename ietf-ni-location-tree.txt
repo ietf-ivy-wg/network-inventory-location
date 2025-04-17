@@ -1,67 +1,86 @@
 module: ietf-ni-location
-  +--rw locations
-     +--rw location* [id]
-     |  +--rw id                  string
-     |  +--ro uuid?               yang:uuid
-     |  +--rw name?               string
-     |  +--rw description?        string
-     |  +--rw alias?              string
-     |  +--rw type?               identityref
-     |  +--rw parent?             -> ../../location/id
-     |  +--rw child*              -> ../../location/id
-     |  +--rw physical-address
-     |  |  +--rw address?        string
-     |  |  +--rw postal-code?    string
-     |  |  +--rw state?          string
-     |  |  +--rw city?           string
-     |  |  +--rw country-code?   string
-     |  +--rw geo-location
-     |     +--rw reference-frame
-     |     |  +--rw alternate-system?    string
-     |     |  |       {alternate-systems}?
-     |     |  +--rw astronomical-body?   string
-     |     |  +--rw geodetic-system
-     |     |     +--rw geodetic-datum?    string
-     |     |     +--rw coord-accuracy?    decimal64
-     |     |     +--rw height-accuracy?   decimal64
-     |     +--rw (location)?
-     |     |  +--:(ellipsoid)
-     |     |  |  +--rw latitude?    decimal64
-     |     |  |  +--rw longitude?   decimal64
-     |     |  |  +--rw height?      decimal64
-     |     |  +--:(cartesian)
-     |     |     +--rw x?           decimal64
-     |     |     +--rw y?           decimal64
-     |     |     +--rw z?           decimal64
-     |     +--rw velocity
-     |     |  +--rw v-north?   decimal64
-     |     |  +--rw v-east?    decimal64
-     |     |  +--rw v-up?      decimal64
-     |     +--rw timestamp?         yang:date-and-time
-     |     +--rw valid-until?       yang:date-and-time
-     +--rw racks
-        +--rw rack* [id]
-           +--rw id                     string
-           +--ro uuid?                  yang:uuid
-           +--rw name?                  string
-           +--rw description?           string
-           +--rw alias?                 string
-           +--rw rack-location
-           |  +--rw location-ref?    ni-location-ref
-           |  +--rw row-number?      uint32
-           |  +--rw column-number?   uint32
-           +--rw height?                uint16
-           +--rw width?                 uint16
-           +--rw depth?                 uint16
-           +--rw max-voltage?           uint16
-           +--rw max-allocated-power?   uint16
-           +--rw contained-chassis* [relative-position]
-              +--rw relative-position    uint8
-              +--rw ne-ref?              leafref
-              +--rw component-ref?       leafref
-
+  augment /nwi:network-inventory:
+    +--rw locations
+       +--rw location* [id]
+       |  +--rw id                    string
+       |  +--ro uuid?                 yang:uuid
+       |  +--rw name?                 string
+       |  +--rw description?          string
+       |  +--rw alias?                string
+       |  +--ro hardware-rev?         string
+       |  +--ro software-rev?         string
+       |  +--ro software-patch-rev*   string
+       |  +--ro mfg-name?             string
+       |  +--ro mfg-date?             yang:date-and-time
+       |  +--ro serial-number?        string
+       |  +--ro product-name?         string
+       |  +--rw type?                 string
+       |  +--rw parent?               -> ../../location/id
+       |  +--rw child*                -> ../../location/id
+       |  +--rw timestamp?            yang:date-and-time
+       |  +--rw valid-until?          yang:date-and-time
+       |  +--rw physical-address
+       |  |  +--rw address?        string
+       |  |  +--rw postal-code?    string
+       |  |  +--rw state?          string
+       |  |  +--rw city?           string
+       |  |  +--rw country-code?   string
+       |  +--rw geo-location
+       |     +--rw reference-frame
+       |     |  +--rw alternate-system?    string
+       |     |  |       {alternate-systems}?
+       |     |  +--rw astronomical-body?   string
+       |     |  +--rw geodetic-system
+       |     |     +--rw geodetic-datum?    string
+       |     |     +--rw coord-accuracy?    decimal64
+       |     |     +--rw height-accuracy?   decimal64
+       |     +--rw (location)?
+       |     |  +--:(ellipsoid)
+       |     |  |  +--rw latitude?    decimal64
+       |     |  |  +--rw longitude?   decimal64
+       |     |  |  +--rw height?      decimal64
+       |     |  +--:(cartesian)
+       |     |     +--rw x?           decimal64
+       |     |     +--rw y?           decimal64
+       |     |     +--rw z?           decimal64
+       |     +--rw velocity
+       |     |  +--rw v-north?   decimal64
+       |     |  +--rw v-east?    decimal64
+       |     |  +--rw v-up?      decimal64
+       |     +--rw timestamp?         yang:date-and-time
+       |     +--rw valid-until?       yang:date-and-time
+       +--rw racks
+          +--rw rack* [id]
+             +--rw id                     string
+             +--ro uuid?                  yang:uuid
+             +--rw name?                  string
+             +--rw description?           string
+             +--rw alias?                 string
+             +--ro hardware-rev?          string
+             +--ro software-rev?          string
+             +--ro software-patch-rev*    string
+             +--ro mfg-name?              string
+             +--ro mfg-date?              yang:date-and-time
+             +--ro serial-number?         string
+             +--ro product-name?          string
+             +--rw rack-location
+             |  +--rw location-ref?    ni-location-ref
+             |  +--rw row-number?      uint32
+             |  +--rw column-number?   uint32
+             +--rw height?                uint16
+             +--rw width?                 uint16
+             +--rw depth?                 uint16
+             +--rw max-voltage?           uint16
+             +--rw max-allocated-power?   uint16
+             +--rw contained-chassis* [relative-position]
+             |  +--rw relative-position    uint8
+             |  +--rw ne-ref?              leafref
+             |  +--rw component-ref?       leafref
+             +--rw timestamp?             yang:date-and-time
+             +--rw valid-until?           yang:date-and-time
   augment /nwi:network-inventory/nwi:network-elements
             /nwi:network-element:
     +--rw locations
        +--rw location*   ni-location-ref
-       +--rw rack?       -> /locations/racks/rack/id
+       +--rw rack?
+               -> /nwi:network-inventory/nil:locations/racks/rack/id
