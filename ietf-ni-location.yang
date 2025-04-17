@@ -3,6 +3,11 @@ module ietf-ni-location {
   namespace "urn:ietf:params:xml:ns:yang:ietf-ni-location";
   prefix nil;
 
+  import ietf-yang-types {
+    prefix yang;
+    reference
+      "RFC 6991: Common YANG Data Types";
+  }
   import ietf-network-inventory {
     prefix nwi;
     reference
@@ -34,7 +39,7 @@ module ietf-ni-location {
     "This YANG module defines a model for Network Inventory
      location.
 
-     Copyright (c) 2024 IETF Trust and the persons
+     Copyright (c) 2025 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -47,7 +52,7 @@ module ietf-ni-location {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2024-08-19 {
+  revision 2025-04-17 {
     description
       "Initial version";
     reference
@@ -57,36 +62,12 @@ module ietf-ni-location {
   }
 
   /* Identities */
-
-  identity inventory-location-type {
-    description
-      "Base identity for network inventory location types, e.g. site,
-       room, building, and floor.";
-  }
-
-  identity site {
-    base inventory-location-type;
-    description
-      "Indicates site as location type.";
-  }
-
-  identity room {
-    base inventory-location-type;
-    description
-      "Indicates equipment room as location type.";
-  }
-
-  identity building {
-    base inventory-location-type;
-    description
-      "Indicates building as location type.";
-  }
-
   /* Typedef */
 
   typedef ni-location-ref {
     type leafref {
-      path "/nil:locations/nil:location/nil:id";
+      path
+        "/nwi:network-inventory/nil:locations/nil:location/nil:id";
     }
     description
       "This type is used by data models that need to reference
@@ -95,7 +76,7 @@ module ietf-ni-location {
 
   /* Grouping */
 
-  grouping physical-address-grouping {
+  grouping physical-address {
     description
       "The grouping of the physical address.";
     container physical-address {
@@ -134,48 +115,69 @@ module ietf-ni-location {
     }
   }
 
-  grouping locations-grouping {
+  grouping locations {
     description
       "The grouping of the locations.";
-    list location {
-      key "id";
+    container locations {
       description
-        "The list of locations within the network.";
-      leaf id {
-        type string;
+        "The container for the NE location information.";
+      list location {
+        key "id";
         description
-          "An identifier of the location.";
-      }
-      uses nwi:common-entity-attributes;
-      leaf type {
-        type identityref {
-          base inventory-location-type;
+          "The list of locations within the network.";
+        leaf id {
+          type string;
+          description
+            "An identifier of the location.";
         }
-        description
-          "The type of network inventory location, e.g.
-           equipment room, building, or site.";
-      }
-      leaf parent {
-        type leafref {
-          path "../../location/id";
+        uses nwi:common-entity-attributes;
+        leaf type {
+          type string;
+          description
+            "The type of network inventory location, e.g.
+             equipment room, building, or site.
+
+             This allows operators to flexibly define custom location
+             types (e.g., 'pole', 'roof', 'floor') based on their
+             specific network scenarios without requiring model
+             extensions. String-based types enable dynamic adaptation
+             to heterogeneous organizational naming conventions.";
         }
-        description
-          "The name of the location that physically contains this
-           location.";
-      }
-      leaf-list child {
-        type leafref {
-          path "../../location/id";
+        leaf parent {
+          type leafref {
+            path "../../location/id";
+          }
+          description
+            "The name of the location that physically contains this
+             location.";
         }
-        description
-          "The name of the contained child locations.";
+        leaf-list child {
+          type leafref {
+            path "../../location/id";
+          }
+          description
+            "The name of the contained child locations.";
+        }
+        leaf timestamp {
+          type yang:date-and-time;
+          description
+            "Reference time when location was recorded.";
+        }
+        leaf valid-until {
+          type yang:date-and-time;
+          description
+            "The timestamp for which this location is valid until.
+             If unspecified, the location has no specific
+             expiration time.";
+        }
+        uses physical-address;
+        uses geo:geo-location;
       }
-      uses physical-address-grouping;
-      uses geo:geo-location;
+      uses racks;
     }
   }
 
-  grouping rack-grouping {
+  grouping racks {
     description
       "The attributes of the rack.";
     container racks {
@@ -277,11 +279,23 @@ module ietf-ni-location {
                the network element and contained by the rack.";
           }
         }
+        leaf timestamp {
+          type yang:date-and-time;
+          description
+            "Reference time when location was recorded.";
+        }
+        leaf valid-until {
+          type yang:date-and-time;
+          description
+            "The timestamp for which this location is valid until.
+             If unspecified, the location has no specific
+             expiration time.";
+        }
       }
     }
   }
 
-  grouping locations-ref-grouping {
+  grouping locations-ref {
     description
       "The attributes of the locations.";
     container locations {
@@ -294,7 +308,7 @@ module ietf-ni-location {
       }
       leaf rack {
         type leafref {
-          path "/nil:locations/nil:racks"
+          path "/nwi:network-inventory/nil:locations/nil:racks"
              + "/nil:rack/nil:id";
         }
         description
@@ -303,17 +317,16 @@ module ietf-ni-location {
     }
   }
 
-  container locations {
+  augment "/nwi:network-inventory" {
     description
-      "The top-level container for the NE location information.";
-    uses locations-grouping;
-    uses rack-grouping;
+      "Provides location information for network inventory.";
+    uses locations;
   }
 
   augment
     "/nwi:network-inventory/nwi:network-elements/nwi:network-element" {
       description
-        "Provides location information for network inventory.";
-      uses locations-ref-grouping;
+        "Augment network element with location information.";
+      uses locations-ref;
   }
 }
