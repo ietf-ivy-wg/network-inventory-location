@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-04-17T01:07:41.600415+00:00",
+  "timestamp": "2025-04-20T01:12:38.133550+00:00",
   "repo": "ietf-ivy-wg/network-inventory-location",
   "labels": [
     {
@@ -103,15 +103,15 @@
       "id": "I_kwDONCC5aM6cEHDE",
       "title": "Med's review comments on the description and IETF format ",
       "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/4",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "lana-wu",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Med's review comments on the description and IETF format during WG adoption\r\n\r\nI already reviewed a previous version of this document. Here are some quick additional comments:\r\n\r\n\r\n  *   NIT\r\n\r\nOLD:\r\n\r\nThe location model can  extend the base network inventory\r\n\r\n   [I-D.ietf-ivy-network-inventory-yang] to enrich NEs with location\r\n\r\n   information.\r\n\r\nNEW:\r\n\r\nThe location model augments\r\n\r\n   the base network inventory\r\n\r\n   [I-D.ietf-ivy-network-inventory-yang] to enrich NEs with location\r\n\r\n   information.\r\n\r\n\r\n  *   NIT\r\n\r\nOLD:\r\n\r\n   The Network Inventory location model is classified as a network\r\n\r\n   configuration model (Section 4 of [RFC8309]).\r\n\r\nNEW:\r\n\r\n   The Network Inventory location model is classified as a network\r\n\r\n   model (Section 3.5.1 of [I-D.ietf-netmod-rfc8407bis]).\r\n\r\n\r\n  *   Question:\r\n\r\nCURRENT:\r\n\r\n   The Network Inventory location YANG model conforms to the Network\r\n\r\n   Management Datastore Architecture (NMDA) [RFC8342].\r\n\r\nPer the IETF guidelines, new models should comply with 8342. What is actually important to highlight is the following:\r\n\r\n\"Designers SHOULD describe and justify any NMDA exceptions in detail, such as the use of separate subtrees and/or separate leafs.\"\r\n\r\nI guess this can be revisited once the module is stable.\r\n\r\n\r\n  *   Clarification (many occurrences): not sure how these two are related? Whether they are redundant? Etc.\r\n\r\nCURRENT:\r\n\r\n\r\n        |  +--rw name?               string\r\n\r\n        |  +--rw alias?              string\r\n\r\n\r\n  *   Security section: Please follow the updated template at https://datatracker.ietf.org/doc/html/draft-ietf-netmod-rfc8407bis-16#name-security-considerations-sect.\r\n\r\n\r\n  *   IANA section: Please update the following to refer to 6020:\r\n\r\n\r\nOLD:\r\n   This document registers a YANG module in the \"YANG Module Names\"\r\n   registry[RFC7950] .\r\n\r\nNEW:\r\n\r\n   This document registers a YANG module in the \"YANG Module Names\"\r\n\r\n   Registry [RFC6020] .\r\nCheers,\r\nMed",
       "createdAt": "2024-10-28T12:44:12Z",
-      "updatedAt": "2024-10-28T12:44:13Z",
-      "closedAt": null,
+      "updatedAt": "2025-04-17T07:41:10Z",
+      "closedAt": "2025-04-17T07:41:09Z",
       "comments": []
     },
     {
