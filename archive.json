@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-03T01:13:46.582836+00:00",
+  "timestamp": "2025-07-06T01:20:24.500781+00:00",
   "repo": "ietf-ivy-wg/network-inventory-location",
   "labels": [
     {
@@ -127,6 +127,24 @@
       "body": "Between a building and room there is the floor information that needs to be defined.\n\nPropose to define a new location type \"floor\":\n\n~~~\n     identity floor {\n       base inventory-location-type;\n       description\n         \"Indicates floor as location type.\";\n     }\n~~~",
       "createdAt": "2025-01-16T16:47:58Z",
       "updatedAt": "2025-01-16T16:47:58Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 6,
+      "id": "I_kwDONCC5aM6-3anQ",
+      "title": "Update mail address of Fabio",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/6",
+      "state": "OPEN",
+      "author": "italobusi",
+      "authorAssociation": "NONE",
+      "assignees": [
+        "lana-wu"
+      ],
+      "labels": [],
+      "body": "```\n    name: Fabio Peruzzini\n    org: FiberCop\n    email: fabio.peruzzini@fibercop.com\n\n```",
+      "createdAt": "2025-07-04T10:39:27Z",
+      "updatedAt": "2025-07-04T10:39:27Z",
       "closedAt": null,
       "comments": []
     }
