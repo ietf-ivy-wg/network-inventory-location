@@ -272,26 +272,20 @@ Table of Contents
    location" module.
 
    module: ietf-ni-location
+
      augment /nwi:network-inventory:
        +--rw locations
           +--rw location* [id]
-          |  +--rw id                    string
-          |  +--ro uuid?                 yang:uuid
-          |  +--rw name?                 string
-          |  +--rw description?          string
-          |  +--rw alias?                string
-          |  +--ro hardware-rev?         string
-          |  +--ro software-rev?         string
-          |  +--ro software-patch-rev*   string
-          |  +--ro mfg-name?             string
-          |  +--ro mfg-date?             yang:date-and-time
-          |  +--ro serial-number?        string
-          |  +--ro product-name?         string
-          |  +--rw type?                 string
-          |  +--rw parent?               -> ../../location/id
-          |  +--rw child*                -> ../../location/id
-          |  +--rw timestamp?            yang:date-and-time
-          |  +--rw valid-until?          yang:date-and-time
+          |  +--rw id                  string
+          |  +--ro uuid?               yang:uuid
+          |  +--rw name?               string
+          |  +--rw description?        string
+          |  +--rw alias?              string
+          |  +--rw type?               string
+          |  +--rw parent?             -> ../../location/id
+          |  +--rw child*              -> ../../location/id
+          |  +--rw timestamp?          yang:date-and-time
+          |  +--rw valid-until?        yang:date-and-time
           |  +--rw physical-address
           |  |  +--rw address?        string
           |  |  +--rw postal-code?    string
@@ -329,13 +323,6 @@ Table of Contents
                 +--rw name?                  string
                 +--rw description?           string
                 +--rw alias?                 string
-                +--ro hardware-rev?          string
-                +--ro software-rev?          string
-                +--ro software-patch-rev*    string
-                +--ro mfg-name?              string
-                +--ro mfg-date?              yang:date-and-time
-                +--ro serial-number?         string
-                +--ro product-name?          string
                 +--rw rack-location
                 |  +--rw location-ref?    ni-location-ref
                 |  +--rw row-number?      uint32
@@ -420,7 +407,7 @@ Table of Contents
         This version of this YANG module is part of RFC XXXX; see
         the RFC itself for full legal notices.";
 
-     revision 2025-04-17 {
+     revision 2025-07-07 {
        description
          "Initial version";
        reference
@@ -498,7 +485,7 @@ Table of Contents
              description
                "An identifier of the location.";
            }
-           uses nwi:common-entity-attributes;
+           uses nwi:basic-common-entity-attributes;
            leaf type {
              type string;
              description
@@ -562,7 +549,7 @@ Table of Contents
                "An identifier that uniquely identifies the rack
                 within a location, e.g. equipment room.";
            }
-           uses nwi:common-entity-attributes;
+           uses nwi:basic-common-entity-attributes;
            container rack-location {
              description
                "The location information of the rack, which
