@@ -1551,8 +1551,6 @@ module: ietf-ni-location
 <div class="breakable sourcecode" id="section-5-2">
 <pre>&lt;CODE BEGINS&gt; file "ietf-ni-location@2025-04-17.yang"
 
-=============== NOTE: '\' line wrapping per RFC 8792 ================
-
 module ietf-ni-location {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ni-location";
@@ -1879,8 +1877,8 @@ module ietf-ni-location {
   }
 
   augment
-    "/nwi:network-inventory/nwi:network-elements/nwi:network-element\
-                                                                  " {
+    "/nwi:network-inventory/nwi:network-elements"
+    + "/nwi:network-element" {
       description
         "Augment network element with location information.";
       uses locations-ref;
@@ -1965,7 +1963,7 @@ Reference:  RFC XXXX
 <dl class="references">
 <dt id="I-D.ietf-ivy-network-inventory-yang">[I-D.ietf-ivy-network-inventory-yang]</dt>
         <dd>
-<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-06</span>, <time datetime="2025-05-21" class="refDate">21 May 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-06">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-06</a>&gt;</span>. </dd>
+<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-07</span>, <time datetime="2025-07-07" class="refDate">7 July 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-07">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3688">[RFC3688]</dt>
         <dd>
