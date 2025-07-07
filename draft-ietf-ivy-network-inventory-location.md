@@ -251,11 +251,10 @@ Max-voltage: the maximum voltage supported by the rack.
 
 The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-ivy-network-inventory-yang}}.
 
-~~~~~~~~~~
-<CODE BEGINS> file "ietf-ni-location@2025-07-07.yang"
+~~~~~~~~~~ yang
 {::include ./ietf-ni-location.yang}
-<CODE ENDS>
 ~~~~~~~~~~
+{: sourcecode-markers="true" sourcecode-name="ietf-ni-location@2025-07-07.yang"}
 
 # Security Considerations
 
