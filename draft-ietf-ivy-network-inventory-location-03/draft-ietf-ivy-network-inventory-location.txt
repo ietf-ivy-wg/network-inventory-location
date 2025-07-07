@@ -352,7 +352,7 @@ Table of Contents
    The "ietf-ni-location" module uses types defined in [RFC9179],
    [I-D.ietf-ivy-network-inventory-yang].
 
-   <CODE BEGINS> file "ietf-ni-location@2025-04-17.yang"
+   <CODE BEGINS> file "ietf-ni-location@2025-07-07.yang"
    module ietf-ni-location {
      yang-version 1.1;
      namespace "urn:ietf:params:xml:ns:yang:ietf-ni-location";
