@@ -243,7 +243,7 @@ Max-voltage: the maximum voltage supported by the rack.
 {{full-tree}} provides an overview of the data model for "ietf-ni-location" module.
 
 ~~~~~~~~~~
-{::include ./ietf-ni-location-tree.txt}
+{::include-fold ./ietf-ni-location-tree.txt}
 ~~~~~~~~~~
 {: #full-tree title="Network Inventory Location Tree Structure" artwork-align="center"}
 
@@ -252,8 +252,8 @@ Max-voltage: the maximum voltage supported by the rack.
 The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~~~~~~~
-<CODE BEGINS> file "ietf-ni-location@2025-04-17.yang"
-{::include-fold ./ietf-ni-location.yang}
+<CODE BEGINS> file "ietf-ni-location@2025-07-07.yang"
+{::include ./ietf-ni-location.yang}
 <CODE ENDS>
 ~~~~~~~~~~
 

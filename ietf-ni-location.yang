@@ -52,7 +52,7 @@ module ietf-ni-location {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2025-04-17 {
+  revision 2025-07-07 {
     description
       "Initial version";
     reference
@@ -130,7 +130,7 @@ module ietf-ni-location {
           description
             "An identifier of the location.";
         }
-        uses nwi:common-entity-attributes;
+        uses nwi:basic-common-entity-attributes;
         leaf type {
           type string;
           description
@@ -194,7 +194,7 @@ module ietf-ni-location {
             "An identifier that uniquely identifies the rack
              within a location, e.g. equipment room.";
         }
-        uses nwi:common-entity-attributes;
+        uses nwi:basic-common-entity-attributes;
         container rack-location {
           description
             "The location information of the rack, which
