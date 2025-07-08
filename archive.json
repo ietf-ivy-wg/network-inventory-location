@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-06T01:20:24.500781+00:00",
+  "timestamp": "2025-07-08T01:14:14.394902+00:00",
   "repo": "ietf-ivy-wg/network-inventory-location",
   "labels": [
     {
@@ -135,19 +135,78 @@
       "id": "I_kwDONCC5aM6-3anQ",
       "title": "Update mail address of Fabio",
       "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/6",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "italobusi",
-      "authorAssociation": "NONE",
+      "authorAssociation": "CONTRIBUTOR",
       "assignees": [
         "lana-wu"
       ],
       "labels": [],
       "body": "```\n    name: Fabio Peruzzini\n    org: FiberCop\n    email: fabio.peruzzini@fibercop.com\n\n```",
       "createdAt": "2025-07-04T10:39:27Z",
-      "updatedAt": "2025-07-04T10:39:27Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2025-07-07T07:38:32Z",
+      "closedAt": "2025-07-07T07:38:32Z",
+      "comments": [
+        {
+          "author": "lana-wu",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks for the update",
+          "createdAt": "2025-07-07T07:38:32Z",
+          "updatedAt": "2025-07-07T07:38:32Z"
+        }
+      ]
+    },
+    {
+      "number": 7,
+      "id": "I_kwDONCC5aM6_Q9Rx",
+      "title": "ietf-ni-location YANG module fails on libyang YANG validation",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/issues/7",
+      "state": "CLOSED",
+      "author": "lana-wu",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Aihua: While updating passive inventory YANG, I noticed that the [ietf-ni-location@2025-04-17.yang](mailto:ietf-ni-location@2025-04-17.yang) for which the passive inventory model is depending on, is failing on YANG validation. The error is about the use of \"\\\" as line wrapping per RFC 8792 and it failed libyang validation.\n",
+      "createdAt": "2025-07-07T12:45:40Z",
+      "updatedAt": "2025-07-07T12:49:49Z",
+      "closedAt": "2025-07-07T12:49:49Z",
+      "comments": [
+        {
+          "author": "italobusi",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "@lana-wu I would suggest to run `pyang` with `--max-line-length 69` option to check the line lengths and fix them manually rather than using folding: this is also in line with the guidelines provided by RFC 8792",
+          "createdAt": "2025-07-07T12:48:06Z",
+          "updatedAt": "2025-07-07T12:48:06Z"
+        }
+      ]
     }
   ],
-  "pulls": []
+  "pulls": [
+    {
+      "number": 8,
+      "id": "PR_kwDONCC5aM6dz2-k",
+      "title": "Minor kramdown syntax enhancement",
+      "url": "https://github.com/ietf-ivy-wg/network-inventory-location/pull/8",
+      "state": "OPEN",
+      "author": "italobusi",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2025-07-07T18:50:37Z",
+      "updatedAt": "2025-07-07T18:50:38Z",
+      "baseRepository": "ietf-ivy-wg/network-inventory-location",
+      "baseRefName": "main",
+      "baseRefOid": "083cac04f1c4c4373ea73a5f6adc8dfa56bf18a6",
+      "headRepository": "ietf-ivy-wg/network-inventory-location",
+      "headRefName": "italobusi-patch-1",
+      "headRefOid": "8de1dca63f03085a207af836687e58e5610425cb",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
 }
