@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2025-07-08T01:14:14.394902+00:00",
+  "timestamp": "2025-07-10T01:15:00.899491+00:00",
   "repo": "ietf-ivy-wg/network-inventory-location",
   "labels": [
     {
@@ -187,25 +187,33 @@
       "id": "PR_kwDONCC5aM6dz2-k",
       "title": "Minor kramdown syntax enhancement",
       "url": "https://github.com/ietf-ivy-wg/network-inventory-location/pull/8",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "italobusi",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "",
       "createdAt": "2025-07-07T18:50:37Z",
-      "updatedAt": "2025-07-07T18:50:38Z",
+      "updatedAt": "2025-07-08T03:16:15Z",
       "baseRepository": "ietf-ivy-wg/network-inventory-location",
       "baseRefName": "main",
       "baseRefOid": "083cac04f1c4c4373ea73a5f6adc8dfa56bf18a6",
       "headRepository": "ietf-ivy-wg/network-inventory-location",
       "headRefName": "italobusi-patch-1",
       "headRefOid": "8de1dca63f03085a207af836687e58e5610425cb",
-      "closedAt": null,
+      "closedAt": "2025-07-08T03:16:15Z",
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
+      "comments": [
+        {
+          "author": "lana-wu",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Looks good to me. Thanks.",
+          "createdAt": "2025-07-08T03:16:15Z",
+          "updatedAt": "2025-07-08T03:16:15Z"
+        }
+      ],
       "reviews": []
     }
   ]
