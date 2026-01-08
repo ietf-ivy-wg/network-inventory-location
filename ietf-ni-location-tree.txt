@@ -4,13 +4,12 @@ module: ietf-ni-location
     +--rw locations
        +--rw location* [id]
        |  +--rw id                  string
-       |  +--ro uuid?               yang:uuid
+       |  +--rw uuid?               yang:uuid
        |  +--rw name?               string
-       |  +--rw description?        string
        |  +--rw alias?              string
+       |  +--rw description?        string
        |  +--rw type?               string
        |  +--rw parent?             -> ../../location/id
-       |  +--rw child*              -> ../../location/id
        |  +--rw timestamp?          yang:date-and-time
        |  +--rw valid-until?        yang:date-and-time
        |  +--rw physical-address
@@ -46,10 +45,10 @@ module: ietf-ni-location
        +--rw racks
           +--rw rack* [id]
              +--rw id                     string
-             +--ro uuid?                  yang:uuid
+             +--rw uuid?                  yang:uuid
              +--rw name?                  string
-             +--rw description?           string
              +--rw alias?                 string
+             +--rw description?           string
              +--rw rack-location
              |  +--rw location-ref?    ni-location-ref
              |  +--rw row-number?      uint32
@@ -59,15 +58,17 @@ module: ietf-ni-location
              +--rw depth?                 uint16
              +--rw max-voltage?           uint16
              +--rw max-allocated-power?   uint16
-             +--rw contained-chassis* [relative-position]
-             |  +--rw relative-position    uint8
-             |  +--rw ne-ref?              leafref
-             |  +--rw component-ref?       leafref
+             +--ro contained-chassis* [relative-position]
+             |  +--ro relative-position    uint8
+             |  +--ro ne-ref?              leafref
              +--rw timestamp?             yang:date-and-time
              +--rw valid-until?           yang:date-and-time
   augment /nwi:network-inventory/nwi:network-elements
             /nwi:network-element:
-    +--rw locations
-       +--rw location*   ni-location-ref
-       +--rw rack?
-               -> /nwi:network-inventory/nil:locations/racks/rack/id
+    +--rw equipment-placement
+       +--rw (placement-type)?
+          +--:(rack-mounted)
+          |  +--rw rack-ref?            leafref
+          |  +--rw relative-position?   uint8
+          +--:(free-placed)
+             +--rw location-ref         leafref
