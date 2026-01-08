@@ -39,7 +39,7 @@ module ietf-ni-location {
     "This YANG module defines a model for Network Inventory
      location.
 
-     Copyright (c) 2025 IETF Trust and the persons
+     Copyright (c) 2026 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -52,7 +52,7 @@ module ietf-ni-location {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2025-07-07 {
+  revision 2026-01-08 {
     description
       "Initial version";
     reference
@@ -66,8 +66,8 @@ module ietf-ni-location {
 
   typedef ni-location-ref {
     type leafref {
-      path
-        "/nwi:network-inventory/nil:locations/nil:location/nil:id";
+      path "/nwi:network-inventory/nil:locations/nil:location"
+         + "/nil:id";
     }
     description
       "This type is used by data models that need to reference
@@ -78,10 +78,10 @@ module ietf-ni-location {
 
   grouping physical-address {
     description
-      "The grouping of the physical address.";
+      "Grouping for physical address information.";
     container physical-address {
       description
-        "Top level container for the physical address.";
+        "Top-level container for the physical address.";
       leaf address {
         type string;
         description
@@ -117,14 +117,14 @@ module ietf-ni-location {
 
   grouping locations {
     description
-      "The grouping of the locations.";
+      "Grouping for locations.";
     container locations {
       description
-        "The container for the NE location information.";
+        "Container for the location information.";
       list location {
         key "id";
         description
-          "The list of locations within the network.";
+          "List of locations within the network.";
         leaf id {
           type string;
           description
@@ -136,7 +136,6 @@ module ietf-ni-location {
           description
             "The type of network inventory location, e.g.
              equipment room, building, or site.
-
              This allows operators to flexibly define custom location
              types (e.g., 'pole', 'roof', 'floor') based on their
              specific network scenarios without requiring model
@@ -148,20 +147,13 @@ module ietf-ni-location {
             path "../../location/id";
           }
           description
-            "The name of the location that physically contains this
-             location.";
-        }
-        leaf-list child {
-          type leafref {
-            path "../../location/id";
-          }
-          description
-            "The name of the contained child locations.";
+            "The identifier of the location that physically contains
+             this location.";
         }
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Reference time when location was recorded.";
+            "Timestamp when the location was recorded.";
         }
         leaf valid-until {
           type yang:date-and-time;
@@ -179,43 +171,41 @@ module ietf-ni-location {
 
   grouping racks {
     description
-      "The attributes of the rack.";
+      "Grouping for rack attributes.";
     container racks {
       description
-        "Top level container for the list of racks.";
+        "Top-level container for the list of racks.";
       list rack {
         key "id";
         description
-          "The list of racks within a location,
-           e.g. equipment room.";
+          "List of racks within the inventory (e.g., in an
+           equipment room).";
         leaf id {
           type string;
           description
-            "An identifier that uniquely identifies the rack
-             within a location, e.g. equipment room.";
+            "An identifier that uniquely identifies the rack.";
         }
         uses nwi:basic-common-entity-attributes;
         container rack-location {
           description
-            "The location information of the rack, which
-             comprises the name of the location, row number, and
-             column number.";
+            "The location information of the rack, which comprises
+             the location reference, row number, and column number.";
           leaf location-ref {
             type ni-location-ref;
             description
-              "Name of location where this rack is located.";
+              "Reference to the location where this rack is placed.";
           }
           leaf row-number {
             type uint32;
             description
-              "Identifies the row within the equipment room where
+              "Identifies the row within the location where
                the rack is located.";
           }
           leaf column-number {
             type uint32;
             description
-              "Identifies the physical location of the rack within
-               the column.";
+              "Identifies the column within the location where
+               the rack is located.";
           }
         }
         leaf height {
@@ -240,23 +230,27 @@ module ietf-ni-location {
           type uint16;
           units "volt";
           description
-            "The maximum voltage could be supported by the rack.";
+            "The maximum voltage supported by the rack.";
         }
         leaf max-allocated-power {
           type uint16;
           units "watts";
           description
-            "The maximum allocated power to the rack.";
+            "The maximum allocated power for the rack.";
         }
         list contained-chassis {
+          config false;
           key "relative-position";
           description
-            "The list of chassis within a rack.";
+            "Read-only list of chassis within a rack.
+             This list is derived from network elements that have a
+             'rack-ref' pointing to this rack and a defined
+             'relative-position'.";
           leaf relative-position {
             type uint8;
             description
-              "A relative position of chassis within
-               the rack";
+              "Relative position (e.g., U-slot) of chassis within
+               the rack.";
           }
           leaf ne-ref {
             type leafref {
@@ -264,31 +258,20 @@ module ietf-ni-location {
                  + "/nwi:network-element/nwi:ne-id";
             }
             description
-              "The reference to the network element containing
+              "Reference to the network element containing
                the chassis component.";
-          }
-          leaf component-ref {
-            type leafref {
-              path "/nwi:network-inventory/nwi:network-elements"
-                 + "/nwi:network-element[nwi:ne-id=current()/.."
-                 + "/ne-ref]/nwi:components/nwi:component"
-                 + "/nwi:component-id";
-            }
-            description
-              "The reference to the chassis component within
-               the network element and contained by the rack.";
           }
         }
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Reference time when location was recorded.";
+            "Timestamp when the rack information was recorded.";
         }
         leaf valid-until {
           type yang:date-and-time;
           description
-            "The timestamp for which this location is valid until.
-             If unspecified, the location has no specific
+            "The timestamp for which this rack is valid until.
+             If unspecified, the rack has no specific
              expiration time.";
         }
       }
@@ -297,37 +280,65 @@ module ietf-ni-location {
 
   grouping locations-ref {
     description
-      "The attributes of the locations.";
-    container locations {
+      "Grouping for referencing locations.";
+    container equipment-placement {
       description
-        "The container for the location.";
-      leaf-list location {
-        type ni-location-ref;
+        "Placement information for a network element. A device is
+         either located within a Rack or directly at a Location.
+         It cannot be explicitly linked to both to avoid data
+         inconsistency.";
+      choice placement-type {
         description
-          "The reference of the location.";
-      }
-      leaf rack {
-        type leafref {
-          path "/nwi:network-inventory/nil:locations/nil:racks"
-             + "/nil:rack/nil:id";
+          "The device is either rack-mounted or placed freely.";
+        case rack-mounted {
+          leaf rack-ref {
+            type leafref {
+              path "/nwi:network-inventory"
+                 + "/nil:locations/nil:racks/nil:rack/nil:id";
+            }
+            description
+              "Reference to the rack where the device is mounted.
+               The location of the device is derived from the rack's
+               location.";
+          }
+          leaf relative-position {
+            type uint8;
+            description
+              "Relative position (e.g., U-slot) of the chassis
+               within the rack.
+               This typically corresponds to the bottom-most unit
+               for multi-chassis elements.";
+          }
         }
-        description
-          "The reference to the rack.";
+        case free-placed {
+          leaf location-ref {
+            type leafref {
+              path "/nwi:network-inventory"
+                 + "/nil:locations/nil:location/nil:id";
+            }
+            mandatory true;
+            description
+              "Reference to the location where the device is
+               placed. Used for devices not mounted in a rack
+               (e.g., an AP on a wall).";
+          }
+        }
       }
     }
   }
 
   augment "/nwi:network-inventory" {
     description
-      "Provides location information for network inventory.";
+      "Augments the base inventory with location and
+       rack information.";
     uses locations;
   }
 
-  augment
-    "/nwi:network-inventory/nwi:network-elements"
-    + "/nwi:network-element" {
-      description
-        "Augment network element with location information.";
-      uses locations-ref;
+  augment "/nwi:network-inventory/nwi:network-elements"
+        + "/nwi:network-element" {
+    description
+      "Augments Network Elements with location placement information.";
+    uses locations-ref;
   }
 }
+
