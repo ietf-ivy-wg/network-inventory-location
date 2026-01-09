@@ -5,14 +5,14 @@
 Network Inventory YANG                                             B. Wu
 Internet-Draft                                                    Huawei
 Intended status: Standards Track                              S. Belotti
-Expires: 12 July 2026                                              Nokia
+Expires: 13 July 2026                                              Nokia
                                                           J.-F. Bouquier
                                                                 Vodafone
                                                             F. Peruzzini
                                                                 FiberCop
                                                                P. Bedard
                                                                    Cisco
-                                                          8 January 2026
+                                                          9 January 2026
 
 
             A YANG Data Model for Network Inventory Location
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 12 July 2026.
+   This Internet-Draft will expire on 13 July 2026.
 
 Copyright Notice
 
@@ -475,7 +475,7 @@ Table of Contents
          "Grouping for locations.";
        container locations {
          description
-           "Container for the location information.";
+           "Top-level container for the list of locations .";
          list location {
            key "id";
            description
