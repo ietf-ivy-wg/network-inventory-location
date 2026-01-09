@@ -178,7 +178,7 @@ module ietf-ni-location {
       list rack {
         key "id";
         description
-          "List of racks within the inventory (e.g., in an
+          "List of racks within a location (e.g., within an
            equipment room).";
         leaf id {
           type string;
