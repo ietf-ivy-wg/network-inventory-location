@@ -120,7 +120,7 @@ module ietf-ni-location {
       "Grouping for locations.";
     container locations {
       description
-        "Container for the location information.";
+        "Top-level container for the list of locations .";
       list location {
         key "id";
         description
