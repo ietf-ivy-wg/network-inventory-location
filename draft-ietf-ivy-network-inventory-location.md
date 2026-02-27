@@ -150,20 +150,23 @@ type of an inventory location, which may be site, equipment room,
 building, etc.
 
 ~~~~ ascii-art
-     +--rw locations
-        +--rw location* [id]
-        |  +--rw id                  string
-        |  +--ro uuid?               yang:uuid
-        |  +--rw name?               string
-        |  +--rw description?        string
-        |  +--rw alias?              string
-        |  +--rw type?               identityref
-        |  +--rw parent?             -> ../../location/id
-        |  +--rw child*              -> ../../location/id
-        |  +--rw physical-address
-        |  |     ...
-        |  +--rw geo-location
-        |        ...
+    +--ro locations
+       +--ro location* [id]
+       |  +--ro id                   string
+       |  +--ro uuid?                yang:uuid
+       |  +--ro name?                string
+       |  +--ro alias?               string
+       |  +--ro description?         string
+       |  +--ro type?                string
+       |  +--ro parent?              -> ../../location/id
+       |  +--ro timestamp?           yang:date-and-time
+       |  +--ro valid-until?         yang:date-and-time
+       |  +--ro physical-address
+       |  |     ...
+       |  +--ro geo-location
+       |  |     ...
+       |  +--ro contained-chassis* [chassis-id]
+       |        ...
 ~~~~
 {: #fig-ni-location-tree title="YANG Subtree of Location"}
 
@@ -222,17 +225,24 @@ Note: Further discussion is needed to decide whether to separate
 The rack attributes include:
 
 ~~~~~~~~~~
-        +--rw racks
-           +--rw rack* [id]
-              +--rw id                     string
-              |     ...
-              +--rw height?                uint16
-              +--rw width?                 uint16
-              +--rw depth?                 uint16
-              +--rw max-voltage?           uint16
-              +--rw max-allocated-power?   uint16
-              +--rw contained-chassis* [relative-position]
-                    ...
+       +--ro racks
+          +--ro rack* [id]
+             +--ro id                     string
+             +--ro uuid?                  yang:uuid
+             +--ro name?                  string
+             +--ro alias?                 string
+             +--ro description?           string
+             +--ro rack-location
+             |     ...
+             +--ro height?                uint16
+             +--ro width?                 uint16
+             +--ro depth?                 uint16
+             +--ro max-voltage?           uint16
+             +--ro max-allocated-power?   uint16
+             +--ro contained-chassis* [relative-position]
+             |     ...
+             +--ro timestamp?             yang:date-and-time
+             +--ro valid-until?           yang:date-and-time 
 ~~~~~~~~~~
 {: #tree title="YANG Subtree of Rack" artwork-align="center"}
 
