@@ -258,15 +258,50 @@ The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-iv
 
 # Operational Considerations
 
-This section summarizes the creation, retrieval, and validation of location data in deployments.
+This model serves as a complement to the base inventory, providing
+ a read-only perspective of network inventory location information
+ known to the controller. It reports the physical locations of network
+ elements and components installed in the network, enabling queries
+ for site, rack, and other location-related information associated
+ with network elements and components.
 
-Network elements are associated with a location by setting the `location-ref` leaf. If a network element is installed in a rack, the element (or its chassis component) additionally carries `rack-ref` and `relative-position` attributes.
+When used in brownfield scenarios, it is worth noting that existing
+ deployments are based on proprietary inventory OSS solutions, and
+ the migration path is highly dependent on the specific proprietary
+ implementation.
 
-During network operations such as fault diagnosis, maintenance, or capacity planning, it is often necessary to identify which devices and components reside within a specific site, room, or rack. The model supports this by exposing location references (e.g., `location-ref`, `rack-ref`) on network elements and chassis components. These associated items can be retrieved using YANG query mechanisms (e.g., NETCONF `<get>` or RESTCONF retrieval) combined with filtering.
+The model is designed based on the controller maintaining authoritative
+ location data through automated tooling, while OSS systems consume
+ this data as read-only operational state. Sources of controller location
+ data may include RFID tooling, geolocation services, as well as manual
+ entry via controller interfaces.
 
-Before using a location for field dispatch or planning, verification is required to ensure at least one of `physical-address` or `geo-location` is present and that the `valid-until` leaf is either not present or indicates a future time. Once the `valid-until` time has passed, the location MUST be considered stale and MUST NOT be used for operational purposes.
+As this data is read-only, the controller does not support OSS modification
+ of controller location records.
 
-In large-scale inventories containing numerous network elements and components, querying location associations can impose a load on the server. To optimize retrieval and avoid overwhelming the server, mechanisms such as RESTCONF or NETCONF pagination should be utilized for queries involving large result sets.
+OSS systems and other management applications obtain location information
+ via standard YANG retrieval operations (NETCONF, RESTCONF), such as
+ querying network elements associated with a specific site or rack.
+
+In large-scale inventories containing numerous network elements and
+ components, querying location associations can impose a load on the
+ server. To optimize retrieval and avoid overwhelming the server, mechanisms
+ such as RESTCONF or NETCONF pagination should be utilized for queries
+ involving large result sets.
+
+Data quality is indicated through timestamps recording the last update
+ time, as well as an optional expiration time for location validity.
+
+Before using a location for field dispatch or planning, verification
+ is required to ensure at least one of physical-address or geo-location
+ is present, and that the valid-until leaf is either not present or indicates
+ a future time. Once the valid-until time has passed, the location MUST be
+ considered stale and MUST NOT be used for operational purposes.
+
+
+A parallel "location-planning" container (read-write) may be introduced
+ in future revisions to support intent-based configuration, where OSS provides
+ planning-level location targets. This is outside the scope of the current document.
 
 # Security Considerations
 
