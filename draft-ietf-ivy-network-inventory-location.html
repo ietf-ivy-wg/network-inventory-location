@@ -39,7 +39,7 @@ the base inventory with comprehensive location data.
     pycountry 24.6.1
     PyYAML 6.0.3
     requests 2.32.5
-    wcwidth 0.2.14
+    wcwidth 0.3.0
 -->
 <link href="draft-ietf-ivy-network-inventory-location.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
@@ -180,7 +180,7 @@ the base inventory with comprehensive location data.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin-ext.woff2') format('woff2');
-  unicode-range: U+0100-024F, U+0259, U+1E00-1EFF, U+2020, U+20A0-20AB, U+20AD-20CF, U+2113, U+2C60-2C7F, U+A720-A7FF;
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 @font-face {
   font-family: 'Oxygen Mono';
@@ -188,7 +188,8 @@ the base inventory with comprehensive location data.
   font-weight: 400;
   font-display: swap;
   src: local('Oxygen Mono'), local('OxygenMono-Regular'), url('https://martinthomson.github.io/rfc-css/fonts/oxygenmono-regular-latin.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
 }
 
 @font-face {
@@ -580,6 +581,7 @@ aside, blockquote {
 }
 blockquote {
   margin: 1em 0;
+  border-left: 2px var(--pilcrow-strong) solid;
 }
 cite {
   display: block;
@@ -650,7 +652,7 @@ a.pilcrow {
   }
 }
 @media not print {
-  :hover > a.pilcrow {
+  :hover > a.pilcrow, a.pilcrow:focus {
     opacity: 1;
   }
   a.pilcrow[href]:hover {
@@ -1058,11 +1060,11 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">Network Inventory Location</td>
-<td class="right">January 2026</td>
+<td class="right">February 2026</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Wu, et al.</td>
-<td class="center">Expires 13 July 2026</td>
+<td class="center">Expires 31 August 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1075,12 +1077,12 @@ svg :is([fill="white"], [fill^="#fff"]) {
 <dd class="internet-draft">draft-ietf-ivy-network-inventory-location-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2026-01-09" class="published">9 January 2026</time>
+<time datetime="2026-02-27" class="published">27 February 2026</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-07-13">13 July 2026</time></dd>
+<dd class="expires"><time datetime="2026-08-31">31 August 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1149,7 +1151,7 @@ the base inventory with comprehensive location data.<a href="#section-abstract-2
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 July 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 31 August 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1581,7 +1583,7 @@ module ietf-ni-location {
     "This YANG module defines a model for Network Inventory
      location.
 
-     Copyright (c) 2025 IETF Trust and the persons
+     Copyright (c) 2026 IETF Trust and the persons
      identified as authors of the code.  All rights reserved.
 
      Redistribution and use in source and binary forms, with or
@@ -1594,7 +1596,7 @@ module ietf-ni-location {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2025-07-07 {
+  revision 2026-02-27 {
     description
       "Initial version";
     reference
@@ -1608,8 +1610,8 @@ module ietf-ni-location {
 
   typedef ni-location-ref {
     type leafref {
-      path
-        "/nwi:network-inventory/nil:locations/nil:location/nil:id";
+      path "/nwi:network-inventory/nil:locations/nil:location"
+         + "/nil:id";
     }
     description
       "This type is used by data models that need to reference
@@ -1620,10 +1622,10 @@ module ietf-ni-location {
 
   grouping physical-address {
     description
-      "The grouping of the physical address.";
+      "Grouping for physical address information.";
     container physical-address {
       description
-        "Top level container for the physical address.";
+        "Top-level container for the physical address.";
       leaf address {
         type string;
         description
@@ -1659,14 +1661,15 @@ module ietf-ni-location {
 
   grouping locations {
     description
-      "The grouping of the locations.";
+      "Grouping for locations.";
     container locations {
+      config false;
       description
-        "The container for the NE location information.";
+        "Container for the location information.";
       list location {
         key "id";
         description
-          "The list of locations within the network.";
+          "List of locations within the network.";
         leaf id {
           type string;
           description
@@ -1678,7 +1681,6 @@ module ietf-ni-location {
           description
             "The type of network inventory location, e.g.
              equipment room, building, or site.
-
              This allows operators to flexibly define custom location
              types (e.g., 'pole', 'roof', 'floor') based on their
              specific network scenarios without requiring model
@@ -1690,20 +1692,13 @@ module ietf-ni-location {
             path "../../location/id";
           }
           description
-            "The name of the location that physically contains this
-             location.";
-        }
-        leaf-list child {
-          type leafref {
-            path "../../location/id";
-          }
-          description
-            "The name of the contained child locations.";
+            "The identifier of the location that physically contains
+             this location.";
         }
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Reference time when location was recorded.";
+            "Timestamp when the location was recorded.";
         }
         leaf valid-until {
           type yang:date-and-time;
@@ -1714,6 +1709,41 @@ module ietf-ni-location {
         }
         uses physical-address;
         uses geo:geo-location;
+        list contained-chassis {
+          key "chassis-id";
+          description
+            "Chassis directly deployed in this location without rack.
+             Also used for distributed chassis components that are
+             logically part of a network element but physically
+             located.";
+          leaf chassis-id {
+            type uint32;
+            description
+              "Unique identifier for this chassis instance in the
+               location.";
+          }
+          leaf ne-ref {
+            type leafref {
+              path "/nwi:network-inventory/nwi:network-elements"
+                 + "/nwi:network-element/nwi:ne-id";
+            }
+            description
+              "Reference to the network element this chassis
+               belongs to. Multiple chassis entries may reference
+               the same ne-ref for distributed systems.";
+          }
+          leaf component-ref {
+            type leafref {
+              path
+                "/nwi:network-inventory/nwi:network-elements"
+              + "/nwi:network-element[nwi:ne-id=current()/../ne-ref]"
+              + "/nwi:components/nwi:component/nwi:component-id";
+            }
+            description
+              "Reference to the specific chassis within the
+               network element.";
+          }
+        }
       }
       uses racks;
     }
@@ -1721,43 +1751,41 @@ module ietf-ni-location {
 
   grouping racks {
     description
-      "The attributes of the rack.";
+      "Grouping for rack attributes.";
     container racks {
       description
-        "Top level container for the list of racks.";
+        "Top-level container for the list of racks.";
       list rack {
         key "id";
         description
-          "The list of racks within a location,
-           e.g. equipment room.";
+          "List of racks within the inventory (e.g., in an
+           equipment room).";
         leaf id {
           type string;
           description
-            "An identifier that uniquely identifies the rack
-             within a location, e.g. equipment room.";
+            "An identifier that uniquely identifies the rack.";
         }
         uses nwi:basic-common-entity-attributes;
         container rack-location {
           description
-            "The location information of the rack, which
-             comprises the name of the location, row number, and
-             column number.";
+            "The location information of the rack, which comprises
+             the location reference, row number, and column number.";
           leaf location-ref {
             type ni-location-ref;
             description
-              "Name of location where this rack is located.";
+              "Reference to the location where this rack is placed.";
           }
           leaf row-number {
             type uint32;
             description
-              "Identifies the row within the equipment room where
+              "Identifies the row within the location where
                the rack is located.";
           }
           leaf column-number {
             type uint32;
             description
-              "Identifies the physical location of the rack within
-               the column.";
+              "Identifies the column within the location where
+               the rack is located.";
           }
         }
         leaf height {
@@ -1782,13 +1810,13 @@ module ietf-ni-location {
           type uint16;
           units "volt";
           description
-            "The maximum voltage could be supported by the rack.";
+            "The maximum voltage supported by the rack.";
         }
         leaf max-allocated-power {
           type uint16;
           units "watts";
           description
-            "The maximum allocated power to the rack.";
+            "The maximum allocated power for the rack.";
         }
         list contained-chassis {
           key "relative-position";
@@ -1797,8 +1825,8 @@ module ietf-ni-location {
           leaf relative-position {
             type uint8;
             description
-              "A relative position of chassis within
-               the rack";
+              "Relative position (e.g., U-slot) of chassis within
+               the rack.";
           }
           leaf ne-ref {
             type leafref {
@@ -1806,7 +1834,7 @@ module ietf-ni-location {
                  + "/nwi:network-element/nwi:ne-id";
             }
             description
-              "The reference to the network element containing
+              "Reference to the network element containing
                the chassis component.";
           }
           leaf component-ref {
@@ -1824,37 +1852,15 @@ module ietf-ni-location {
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Reference time when location was recorded.";
+            "Timestamp when the rack information was recorded.";
         }
         leaf valid-until {
           type yang:date-and-time;
           description
-            "The timestamp for which this location is valid until.
-             If unspecified, the location has no specific
+            "The timestamp for which this rack is valid until.
+             If unspecified, the rack has no specific
              expiration time.";
         }
-      }
-    }
-  }
-
-  grouping locations-ref {
-    description
-      "The attributes of the locations.";
-    container locations {
-      description
-        "The container for the location.";
-      leaf-list location {
-        type ni-location-ref;
-        description
-          "The reference of the location.";
-      }
-      leaf rack {
-        type leafref {
-          path "/nwi:network-inventory/nil:locations/nil:racks"
-             + "/nil:rack/nil:id";
-        }
-        description
-          "The reference to the rack.";
       }
     }
   }
@@ -1864,15 +1870,8 @@ module ietf-ni-location {
       "Provides location information for network inventory.";
     uses locations;
   }
-
-  augment
-    "/nwi:network-inventory/nwi:network-elements"
-    + "/nwi:network-element" {
-      description
-        "Augment network element with location information.";
-      uses locations-ref;
-  }
 }
+
 
 &lt;CODE ENDS&gt;</pre><a href="#section-5-2" class="pilcrow">¶</a>
 </div>
@@ -1964,7 +1963,7 @@ Reference:  RFC XXXX
 <dl class="references">
 <dt id="I-D.ietf-ivy-network-inventory-yang">[I-D.ietf-ivy-network-inventory-yang]</dt>
         <dd>
-<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-12</span>, <time datetime="2025-12-22" class="refDate">22 December 2025</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-12">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-12</a>&gt;</span>. </dd>
+<span class="refAuthor">Yu, C.</span>, <span class="refAuthor">Belotti, S.</span>, <span class="refAuthor">Bouquier, J.</span>, <span class="refAuthor">Peruzzini, F.</span>, and <span class="refAuthor">P. Bedard</span>, <span class="refTitle">"A Base YANG Data Model for Network Inventory"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-ivy-network-inventory-yang-14</span>, <time datetime="2026-02-05" class="refDate">5 February 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-14">https://datatracker.ietf.org/doc/html/draft-ietf-ivy-network-inventory-yang-14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="RFC3688">[RFC3688]</dt>
         <dd>

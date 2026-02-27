@@ -5,14 +5,14 @@
 Network Inventory YANG                                             B. Wu
 Internet-Draft                                                    Huawei
 Intended status: Standards Track                              S. Belotti
-Expires: 13 July 2026                                              Nokia
+Expires: 31 August 2026                                            Nokia
                                                           J.-F. Bouquier
                                                                 Vodafone
                                                             F. Peruzzini
                                                                 FiberCop
                                                                P. Bedard
                                                                    Cisco
-                                                          9 January 2026
+                                                        27 February 2026
 
 
             A YANG Data Model for Network Inventory Location
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 13 July 2026.
+   This Internet-Draft will expire on 31 August 2026.
 
 Copyright Notice
 
@@ -395,7 +395,7 @@ Table of Contents
        "This YANG module defines a model for Network Inventory
         location.
 
-        Copyright (c) 2025 IETF Trust and the persons
+        Copyright (c) 2026 IETF Trust and the persons
         identified as authors of the code.  All rights reserved.
 
         Redistribution and use in source and binary forms, with or
@@ -408,7 +408,7 @@ Table of Contents
         This version of this YANG module is part of RFC XXXX; see
         the RFC itself for full legal notices.";
 
-     revision 2025-07-07 {
+     revision 2026-02-27 {
        description
          "Initial version";
        reference
@@ -422,8 +422,8 @@ Table of Contents
 
      typedef ni-location-ref {
        type leafref {
-         path
-           "/nwi:network-inventory/nil:locations/nil:location/nil:id";
+         path "/nwi:network-inventory/nil:locations/nil:location"
+            + "/nil:id";
        }
        description
          "This type is used by data models that need to reference
@@ -434,10 +434,10 @@ Table of Contents
 
      grouping physical-address {
        description
-         "The grouping of the physical address.";
+         "Grouping for physical address information.";
        container physical-address {
          description
-           "Top level container for the physical address.";
+           "Top-level container for the physical address.";
          leaf address {
            type string;
            description
@@ -473,14 +473,15 @@ Table of Contents
 
      grouping locations {
        description
-         "The grouping of the locations.";
+         "Grouping for locations.";
        container locations {
+         config false;
          description
-           "The container for the NE location information.";
+           "Container for the location information.";
          list location {
            key "id";
            description
-             "The list of locations within the network.";
+             "List of locations within the network.";
            leaf id {
              type string;
              description
@@ -492,7 +493,6 @@ Table of Contents
              description
                "The type of network inventory location, e.g.
                 equipment room, building, or site.
-
                 This allows operators to flexibly define custom location
                 types (e.g., 'pole', 'roof', 'floor') based on their
                 specific network scenarios without requiring model
@@ -504,20 +504,13 @@ Table of Contents
                path "../../location/id";
              }
              description
-               "The name of the location that physically contains this
-                location.";
-           }
-           leaf-list child {
-             type leafref {
-               path "../../location/id";
-             }
-             description
-               "The name of the contained child locations.";
+               "The identifier of the location that physically contains
+                this location.";
            }
            leaf timestamp {
              type yang:date-and-time;
              description
-               "Reference time when location was recorded.";
+               "Timestamp when the location was recorded.";
            }
            leaf valid-until {
              type yang:date-and-time;
@@ -528,6 +521,41 @@ Table of Contents
            }
            uses physical-address;
            uses geo:geo-location;
+           list contained-chassis {
+             key "chassis-id";
+             description
+               "Chassis directly deployed in this location without rack.
+                Also used for distributed chassis components that are
+                logically part of a network element but physically
+                located.";
+             leaf chassis-id {
+               type uint32;
+               description
+                 "Unique identifier for this chassis instance in the
+                  location.";
+             }
+             leaf ne-ref {
+               type leafref {
+                 path "/nwi:network-inventory/nwi:network-elements"
+                    + "/nwi:network-element/nwi:ne-id";
+               }
+               description
+                 "Reference to the network element this chassis
+                  belongs to. Multiple chassis entries may reference
+                  the same ne-ref for distributed systems.";
+             }
+             leaf component-ref {
+               type leafref {
+                 path
+                   "/nwi:network-inventory/nwi:network-elements"
+                 + "/nwi:network-element[nwi:ne-id=current()/../ne-ref]"
+                 + "/nwi:components/nwi:component/nwi:component-id";
+               }
+               description
+                 "Reference to the specific chassis within the
+                  network element.";
+             }
+           }
          }
          uses racks;
        }
@@ -535,43 +563,41 @@ Table of Contents
 
      grouping racks {
        description
-         "The attributes of the rack.";
+         "Grouping for rack attributes.";
        container racks {
          description
-           "Top level container for the list of racks.";
+           "Top-level container for the list of racks.";
          list rack {
            key "id";
            description
-             "The list of racks within a location,
-              e.g. equipment room.";
+             "List of racks within the inventory (e.g., in an
+              equipment room).";
            leaf id {
              type string;
              description
-               "An identifier that uniquely identifies the rack
-                within a location, e.g. equipment room.";
+               "An identifier that uniquely identifies the rack.";
            }
            uses nwi:basic-common-entity-attributes;
            container rack-location {
              description
-               "The location information of the rack, which
-                comprises the name of the location, row number, and
-                column number.";
+               "The location information of the rack, which comprises
+                the location reference, row number, and column number.";
              leaf location-ref {
                type ni-location-ref;
                description
-                 "Name of location where this rack is located.";
+                 "Reference to the location where this rack is placed.";
              }
              leaf row-number {
                type uint32;
                description
-                 "Identifies the row within the equipment room where
+                 "Identifies the row within the location where
                   the rack is located.";
              }
              leaf column-number {
                type uint32;
                description
-                 "Identifies the physical location of the rack within
-                  the column.";
+                 "Identifies the column within the location where
+                  the rack is located.";
              }
            }
            leaf height {
@@ -596,13 +622,13 @@ Table of Contents
              type uint16;
              units "volt";
              description
-               "The maximum voltage could be supported by the rack.";
+               "The maximum voltage supported by the rack.";
            }
            leaf max-allocated-power {
              type uint16;
              units "watts";
              description
-               "The maximum allocated power to the rack.";
+               "The maximum allocated power for the rack.";
            }
            list contained-chassis {
              key "relative-position";
@@ -611,8 +637,8 @@ Table of Contents
              leaf relative-position {
                type uint8;
                description
-                 "A relative position of chassis within
-                  the rack";
+                 "Relative position (e.g., U-slot) of chassis within
+                  the rack.";
              }
              leaf ne-ref {
                type leafref {
@@ -620,7 +646,7 @@ Table of Contents
                     + "/nwi:network-element/nwi:ne-id";
                }
                description
-                 "The reference to the network element containing
+                 "Reference to the network element containing
                   the chassis component.";
              }
              leaf component-ref {
@@ -638,37 +664,15 @@ Table of Contents
            leaf timestamp {
              type yang:date-and-time;
              description
-               "Reference time when location was recorded.";
+               "Timestamp when the rack information was recorded.";
            }
            leaf valid-until {
              type yang:date-and-time;
              description
-               "The timestamp for which this location is valid until.
-                If unspecified, the location has no specific
+               "The timestamp for which this rack is valid until.
+                If unspecified, the rack has no specific
                 expiration time.";
            }
-         }
-       }
-     }
-
-     grouping locations-ref {
-       description
-         "The attributes of the locations.";
-       container locations {
-         description
-           "The container for the location.";
-         leaf-list location {
-           type ni-location-ref;
-           description
-             "The reference of the location.";
-         }
-         leaf rack {
-           type leafref {
-             path "/nwi:network-inventory/nil:locations/nil:racks"
-                + "/nil:rack/nil:id";
-           }
-           description
-             "The reference to the rack.";
          }
        }
      }
@@ -677,14 +681,6 @@ Table of Contents
        description
          "Provides location information for network inventory.";
        uses locations;
-     }
-
-     augment
-       "/nwi:network-inventory/nwi:network-elements"
-       + "/nwi:network-element" {
-         description
-           "Augment network element with location information.";
-         uses locations-ref;
      }
    }
    <CODE ENDS>
@@ -786,9 +782,9 @@ Table of Contents
               Yu, C., Belotti, S., Bouquier, J., Peruzzini, F., and P.
               Bedard, "A Base YANG Data Model for Network Inventory",
               Work in Progress, Internet-Draft, draft-ietf-ivy-network-
-              inventory-yang-12, 22 December 2025,
+              inventory-yang-14, 5 February 2026,
               <https://datatracker.ietf.org/doc/html/draft-ietf-ivy-
-              network-inventory-yang-12>.
+              network-inventory-yang-14>.
 
    [RFC3688]  Mealling, M., "The IETF XML Registry", BCP 81, RFC 3688,
               DOI 10.17487/RFC3688, January 2004,
