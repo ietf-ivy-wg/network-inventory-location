@@ -264,7 +264,7 @@ The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-iv
 ~~~~~~~~~~ yang
 {::include ./ietf-ni-location.yang}
 ~~~~~~~~~~
-{: sourcecode-markers="true" sourcecode-name="ietf-ni-location@2025-07-07.yang"}
+{: sourcecode-markers="true" sourcecode-name="ietf-ni-location@2026-02-28.yang"}
 
 # Operational Considerations
 
