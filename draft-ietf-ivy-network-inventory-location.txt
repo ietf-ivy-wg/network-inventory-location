@@ -285,79 +285,76 @@ Table of Contents
    Figure 4 provides an overview of the data model for "ietf-ni-
    location" module.
 
-   module: ietf-ni-location
+       module: ietf-ni-location
 
-     augment /nwi:network-inventory:
-       +--rw locations
-          +--rw location* [id]
-          |  +--rw id                  string
-          |  +--ro uuid?               yang:uuid
-          |  +--rw name?               string
-          |  +--rw description?        string
-          |  +--rw alias?              string
-          |  +--rw type?               string
-          |  +--rw parent?             -> ../../location/id
-          |  +--rw child*              -> ../../location/id
-          |  +--rw timestamp?          yang:date-and-time
-          |  +--rw valid-until?        yang:date-and-time
-          |  +--rw physical-address
-          |  |  +--rw address?        string
-          |  |  +--rw postal-code?    string
-          |  |  +--rw state?          string
-          |  |  +--rw city?           string
-          |  |  +--rw country-code?   string
-          |  +--rw geo-location
-          |     +--rw reference-frame
-          |     |  +--rw alternate-system?    string
-          |     |  |       {alternate-systems}?
-          |     |  +--rw astronomical-body?   string
-          |     |  +--rw geodetic-system
-          |     |     +--rw geodetic-datum?    string
-          |     |     +--rw coord-accuracy?    decimal64
-          |     |     +--rw height-accuracy?   decimal64
-          |     +--rw (location)?
-          |     |  +--:(ellipsoid)
-          |     |  |  +--rw latitude?    decimal64
-          |     |  |  +--rw longitude?   decimal64
-          |     |  |  +--rw height?      decimal64
-          |     |  +--:(cartesian)
-          |     |     +--rw x?           decimal64
-          |     |     +--rw y?           decimal64
-          |     |     +--rw z?           decimal64
-          |     +--rw velocity
-          |     |  +--rw v-north?   decimal64
-          |     |  +--rw v-east?    decimal64
-          |     |  +--rw v-up?      decimal64
-          |     +--rw timestamp?         yang:date-and-time
-          |     +--rw valid-until?       yang:date-and-time
-          +--rw racks
-             +--rw rack* [id]
-                +--rw id                     string
-                +--ro uuid?                  yang:uuid
-                +--rw name?                  string
-                +--rw description?           string
-                +--rw alias?                 string
-                +--rw rack-location
-                |  +--rw location-ref?    ni-location-ref
-                |  +--rw row-number?      uint32
-                |  +--rw column-number?   uint32
-                +--rw height?                uint16
-                +--rw width?                 uint16
-                +--rw depth?                 uint16
-                +--rw max-voltage?           uint16
-                +--rw max-allocated-power?   uint16
-                +--rw contained-chassis* [relative-position]
-                |  +--rw relative-position    uint8
-                |  +--rw ne-ref?              leafref
-                |  +--rw component-ref?       leafref
-                +--rw timestamp?             yang:date-and-time
-                +--rw valid-until?           yang:date-and-time
-     augment /nwi:network-inventory/nwi:network-elements
-               /nwi:network-element:
-       +--rw locations
-          +--rw location*   ni-location-ref
-          +--rw rack?
-                  -> /nwi:network-inventory/nil:locations/racks/rack/id
+         augment /nwi:network-inventory:
+           +--ro locations
+              +--ro location* [id]
+              |  +--ro id                   string
+              |  +--ro uuid?                yang:uuid
+              |  +--ro name?                string
+              |  +--ro alias?               string
+              |  +--ro description?         string
+              |  +--ro type?                string
+              |  +--ro parent?              -> ../../location/id
+              |  +--ro timestamp?           yang:date-and-time
+              |  +--ro valid-until?         yang:date-and-time
+              |  +--ro physical-address
+              |  |  +--ro address?        string
+              |  |  +--ro postal-code?    string
+              |  |  +--ro state?          string
+              |  |  +--ro city?           string
+              |  |  +--ro country-code?   string
+              |  +--ro geo-location
+              |  |  +--ro reference-frame
+              |  |  |  +--ro alternate-system?    string
+              |  |  |  |       {alternate-systems}?
+              |  |  |  +--ro astronomical-body?   string
+              |  |  |  +--ro geodetic-system
+              |  |  |     +--ro geodetic-datum?    string
+              |  |  |     +--ro coord-accuracy?    decimal64
+              |  |  |     +--ro height-accuracy?   decimal64
+              |  |  +--ro (location)?
+              |  |  |  +--:(ellipsoid)
+              |  |  |  |  +--ro latitude?    decimal64
+              |  |  |  |  +--ro longitude?   decimal64
+              |  |  |  |  +--ro height?      decimal64
+              |  |  |  +--:(cartesian)
+              |  |  |     +--ro x?           decimal64
+              |  |  |     +--ro y?           decimal64
+              |  |  |     +--ro z?           decimal64
+              |  |  +--ro velocity
+              |  |  |  +--ro v-north?   decimal64
+              |  |  |  +--ro v-east?    decimal64
+              |  |  |  +--ro v-up?      decimal64
+              |  |  +--ro timestamp?         yang:date-and-time
+              |  |  +--ro valid-until?       yang:date-and-time
+              |  +--ro contained-chassis* [chassis-id]
+              |     +--ro chassis-id       uint32
+              |     +--ro ne-ref?          leafref
+              |     +--ro component-ref?   leafref
+              +--ro racks
+                 +--ro rack* [id]
+                    +--ro id                     string
+                    +--ro uuid?                  yang:uuid
+                    +--ro name?                  string
+                    +--ro alias?                 string
+                    +--ro description?           string
+                    +--ro rack-location
+                    |  +--ro location-ref?    ni-location-ref
+                    |  +--ro row-number?      uint32
+                    |  +--ro column-number?   uint32
+                    +--ro height?                uint16
+                    +--ro width?                 uint16
+                    +--ro depth?                 uint16
+                    +--ro max-voltage?           uint16
+                    +--ro max-allocated-power?   uint16
+                    +--ro contained-chassis* [relative-position]
+                    |  +--ro relative-position    uint8
+                    |  +--ro ne-ref?              leafref
+                    |  +--ro component-ref?       leafref
+                    +--ro timestamp?             yang:date-and-time
+                    +--ro valid-until?           yang:date-and-time
 
             Figure 4: Network Inventory Location Tree Structure
 
