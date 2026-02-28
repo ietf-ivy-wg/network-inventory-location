@@ -283,7 +283,7 @@ When used in brownfield scenarios, it is worth noting that existing
 The model is designed based on the controller maintaining authoritative
  location data through automated tooling, while OSS systems consume
  this data as read-only operational state. Sources of controller location
- data may include RFID tooling, geolocation services, as well as manual
+ data may include RFID (Radio Frequency IDentification) tooling, geolocation services, as well as manual
  entry via controller interfaces.
 
 As this data is read-only, the controller does not support OSS modification
