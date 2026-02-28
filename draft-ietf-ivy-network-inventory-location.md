@@ -363,6 +363,251 @@ Reference:  RFC XXXX
 
 --- back
 
+# Examples
+This section provides example usages of the Network Inventory Location
+ model for two common deployment scenarios: a non-rack-mounted Access Point
+ and a distributed multi-chassis network element.
+
+## Non-Rack Deployment: Access Point
+This example illustrates a typical edge deployment scenario where a Wi-Fi
+ Access Point (AP) is mounted directly to a ceiling without a rack enclosure.
+
+The location hierarchy is as follows:
+
+~~~~ aasvg
+Site: Foo-Enterprise-Campus
+└── Building: Building-A
+    └── Floor: Floor-2
+        └── Room: Corridor-East (corridor area)
+            └── AP directly ceiling-mounted (no rack)
+~~~~
+
+The following shows the location data instance:
+
+~~~~ ascii-art
+{
+  "ietf-ni-location:locations": {
+    "location": [
+      {
+        "id": "Foo-Enterprise-Campus",
+        "uuid": "550e8400-e29b-41d4-a716-446655440000",
+        "name": "Foo Enterprise Campus",
+        "type": "site",
+        "timestamp": "2026-01-15T08:30:00Z"
+      },
+      {
+        "id": "Building-A",
+        "uuid": "550e8400-e29b-41d4-a716-446655440001",
+        "name": "Building A",
+        "type": "building",
+        "parent": "Foo-Enterprise-Campus",
+        "timestamp": "2026-01-15T08:30:00Z"
+      },
+      {
+        "id": "Floor-2",
+        "uuid": "550e8400-e29b-41d4-a716-446655440002",
+        "name": "Floor 2",
+        "type": "floor",
+        "parent": "Building-A",
+        "timestamp": "2026-01-15T08:30:00Z"
+      },
+      {
+        "id": "Corridor-East",
+        "uuid": "550e8400-e29b-41d4-a716-446655440003",
+        "name": "East Corridor",
+        "alias": "Corridor-2F-East",
+        "description": "East corridor on Floor 2, AP deployment area",
+        "type": "corridor",
+        "parent": "Floor-2",
+        "timestamp": "2026-01-15T08:30:00Z",
+        "valid-until": "2030-12-31T23:59:59Z",
+        "physical-address": {
+          "address": "123 Foo Street, Floor 2 East Corridor",
+          "postal-code": "12345",
+          "state": "Foo-State",
+          "city": "Foo-City",
+          "country-code": "ZZ"
+        },
+        "geo-location": {
+          "reference-frame": {
+            "astronomical-body": "earth",
+            "geodetic-system": {
+              "geodetic-datum": "WGS-84",
+              "coord-accuracy": 5.0,
+              "height-accuracy": 10.0
+            }
+          },
+          "ellipsoid": {
+            "latitude": 40.7128,
+            "longitude": -74.0060,
+            "height": 15.0
+          },
+          "velocity": {
+            "v-north": 0.0,
+            "v-east": 0.0,
+            "v-up": 0.0
+          },
+          "timestamp": "2026-01-15T08:30:00Z",
+          "valid-until": "2030-12-31T23:59:59Z"
+        },
+        "contained-chassis": [
+          {
+            "chassis-id": 1,
+            "ne-ref": "AP-Corridor-East-01",
+            "component-ref": "chassis-1"
+          }
+        ]
+      }
+    ],
+    "racks": []
+  }
+}
+~~~~
+
+## Distributed Multi-Chassis Network Element
+
+This example illustrates a distributed deployment where a single
+ logical network element (NE-1, a stack switch) spans multiple
+ physical locations. The three chassis of the stack switch
+ are located in separate telecommunications rooms on different
+ floors, interconnected via stacking cables.
+The location hierarchy is as follows:
+
+~~~~ aasvg
+Site: Foo-DC
+├── Location: Room-101 (First Floor Telecom Room)
+│   └── Rack: Rack-101-A
+│       └── U10: NE-1 chassis-1 (Master switch)
+│
+├── Location: Room-201 (Second Floor Telecom Room)
+│   └── Rack: Rack-201-B
+│       └── U15: NE-1 chassis-2 (Stack member)
+│
+└── Location: Room-301 (Third Floor Telecom Room)
+    └── Rack: Rack-301-C
+        └── U20: NE-1 chassis-3 (Stack member)
+~~~~
+
+The following shows the location data instance:
+
+~~~~ ascii-art
+{
+  "ietf-ni-location:locations": {
+    "location": [
+      {
+        "id": "Foo-DC",
+        "name": "Foo Data Center",
+        "type": "site",
+        "timestamp": "2026-01-15T08:00:00Z"
+      },
+      {
+        "id": "Room-101",
+        "name": "First Floor Telecom Room",
+        "type": "room",
+        "parent": "Foo-DC",
+        "timestamp": "2026-01-15T08:00:00Z",
+        "contained-chassis": []
+      },
+      {
+        "id": "Room-201",
+        "name": "Second Floor Telecom Room",
+        "type": "room",
+        "parent": "Foo-DC",
+        "timestamp": "2026-01-15T08:00:00Z",
+        "contained-chassis": []
+      },
+      {
+        "id": "Room-301",
+        "name": "Third Floor Telecom Room",
+        "type": "room",
+        "parent": "Foo-DC",
+        "timestamp": "2026-01-15T08:00:00Z",
+        "contained-chassis": []
+      }
+    ],
+    "racks": {
+      "rack": [
+        {
+          "id": "Rack-101-A",
+          "uuid": "660e8400-e29b-41d4-a716-446655440010",
+          "name": "Rack A Room 101",
+          "rack-location": {
+            "location-ref": "Room-101",
+            "row-number": 1,
+            "column-number": 1
+          },
+          "height": 2200,
+          "width": 600,
+          "depth": 1200,
+          "max-voltage": 240,
+          "max-allocated-power": 8000,
+          "contained-chassis": [
+            {
+              "relative-position": 10,
+              "ne-ref": "NE-1",
+              "component-ref": "chassis-1"
+            }
+          ],
+          "timestamp": "2026-01-15T10:00:00Z",
+          "valid-until": "2028-01-15T10:00:00Z"
+        },
+        {
+          "id": "Rack-201-B",
+          "uuid": "660e8400-e29b-41d4-a716-446655440011",
+          "name": "Rack B Room 201",
+          "rack-location": {
+            "location-ref": "Room-201",
+            "row-number": 2,
+            "column-number": 1
+          },
+          "height": 2200,
+          "width": 600,
+          "depth": 1200,
+          "max-voltage": 240,
+          "max-allocated-power": 8000,
+          "contained-chassis": [
+            {
+              "relative-position": 15,
+              "ne-ref": "NE-1",
+              "component-ref": "chassis-2"
+            }
+          ],
+          "timestamp": "2026-01-15T10:00:00Z",
+          "valid-until": "2028-01-15T10:00:00Z"
+        },
+        {
+          "id": "Rack-301-C",
+          "uuid": "660e8400-e29b-41d4-a716-446655440012",
+          "name": "Rack C Room 301",
+          "rack-location": {
+            "location-ref": "Room-301",
+            "row-number": 3,
+            "column-number": 1
+          },
+          "height": 2200,
+          "width": 600,
+          "depth": 1200,
+          "max-voltage": 240,
+          "max-allocated-power": 8000,
+          "contained-chassis": [
+            {
+              "relative-position": 20,
+              "ne-ref": "NE-1",
+              "component-ref": "chassis-3"
+            }
+          ],
+          "timestamp": "2026-01-15T10:00:00Z",
+          "valid-until": "2028-01-15T10:00:00Z"
+        }
+      ]
+    }
+  }
+}
+
+~~~~
+
+{: numbered="false"}
+
 # Acknowledgments
 {:numbered="false"}
 
