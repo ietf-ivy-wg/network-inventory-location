@@ -257,7 +257,7 @@ Max-voltage: the maximum voltage supported by the rack.
 
 # YANG Data model for Network Inventory Location
 
-The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-ivy-network-inventory-yang}}.
+The "ietf-ni-location" module uses types defined in {{!RFC9911}}, {{!RFC9179}}, and {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~~~~~~~ yang
 {::include ./ietf-ni-location.yang}
