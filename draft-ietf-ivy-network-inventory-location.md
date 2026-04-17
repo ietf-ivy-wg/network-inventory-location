@@ -333,20 +333,20 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-'locations': This list reports physical deployment 
-information including facility structures (sites, buildings, rooms), 
-rack physical attributes (dimensions, power capacity, security 
-classification), and optionally geographic coordinates. The list also 
-references network elements and components by their inventory 
+'locations': This list reports physical deployment
+information including facility structures (sites, buildings, rooms),
+rack physical attributes (dimensions, power capacity, security
+classification), and optionally geographic coordinates. The list also
+references network elements and components by their inventory
 identifiers (ne-id, component-id). Uncontrolled disclosure may:
 
-*  Enable association of inventory identifiers with physical facility 
+*  Enable association of inventory identifiers with physical facility
    structures and geographic coordinates
-*  Reveal facility layouts, equipment density, and rack physical 
+*  Reveal facility layouts, equipment density, and rack physical
    security characteristics when combined with other network data
 *  Expose precise geographic coordinates (when configured), which may
    facilitate physical location identification
-*  Indicate physical protection levels through rack security 
+*  Indicate physical protection levels through rack security
    classifications
 
 # IANA Considerations
