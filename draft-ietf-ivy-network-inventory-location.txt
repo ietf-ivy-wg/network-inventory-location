@@ -439,7 +439,8 @@ Table of Contents
      identity rack-standard {
        base rack-class-type;
        description
-         "Standard general-purpose rack.";
+         "Standard general-purpose rack without physical locking
+          mechanisms.";
      }
 
      identity rack-secure-baseline {
@@ -457,7 +458,7 @@ Table of Contents
      identity rack-secure-high {
        base rack-class-type;
        description
-         "High security rack.";
+         "High security lockable rack.";
      }
 
      /* Typedef */
@@ -810,15 +811,24 @@ Table of Contents
    subtrees and data nodes have particular sensitivities/
    vulnerabilities:
 
-   'locations': This list reveals physical deployment positions,
-   facility structures, and geographic distribution of network elements.
-   Uncontrolled disclosure may enable mapping of critical
-   infrastructure, leading to physical security or operational risks.
+   'locations': This list reports physical deployment information
+   including facility structures (sites, buildings, rooms), rack
+   physical attributes (dimensions, power capacity, security
+   classification), and optionally geographic coordinates.  The list
+   also references network elements and components by their inventory
+   identifiers (ne-id, component-id).  Uncontrolled disclosure may:
 
-   "rack-class": This leaf indicates the security classification of a
-   rack.  Unauthorized disclosure of rack security classification can
-   reveal physical security characteristics of critical infrastructure
-   and network equipment deployments.
+   *  Enable association of inventory identifiers with physical facility
+      structures and geographic coordinates
+
+   *  Reveal facility layouts, equipment density, and rack physical
+      security characteristics when combined with other network data
+
+   *  Expose precise geographic coordinates (when configured), which may
+      facilitate physical location identification
+
+   *  Indicate physical protection levels through rack security
+      classifications
 
 8.  IANA Considerations
 

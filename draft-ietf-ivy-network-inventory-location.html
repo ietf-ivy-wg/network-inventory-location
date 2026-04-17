@@ -1642,7 +1642,8 @@ module ietf-ni-location {
   identity rack-standard {
     base rack-class-type;
     description
-      "Standard general-purpose rack.";
+      "Standard general-purpose rack without physical locking
+       mechanisms.";
   }
 
   identity rack-secure-baseline {
@@ -1660,7 +1661,7 @@ module ietf-ni-location {
   identity rack-secure-high {
     base rack-class-type;
     description
-      "High security rack.";
+      "High security lockable rack.";
   }
 
   /* Typedef */
@@ -2004,15 +2005,30 @@ sensitive or vulnerable in some network environments. It is thus
 important to control read access (e.g., via get, get-config, or
 notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:<a href="#section-7-4" class="pilcrow">¶</a></p>
-<p id="section-7-5">'locations': This list reveals physical deployment positions,
-      facility structures, and geographic distribution of
-      network elements.  Uncontrolled disclosure may enable
-      mapping of critical infrastructure, leading to physical
-      security or operational risks.<a href="#section-7-5" class="pilcrow">¶</a></p>
-<p id="section-7-6">"rack-class": This leaf indicates the security classification of a rack.
-Unauthorized disclosure of rack security classification can reveal physical security
-      characteristics of critical infrastructure and network equipment
-      deployments.<a href="#section-7-6" class="pilcrow">¶</a></p>
+<p id="section-7-5">'locations': This list reports physical deployment
+information including facility structures (sites, buildings, rooms),
+rack physical attributes (dimensions, power capacity, security
+classification), and optionally geographic coordinates. The list also
+references network elements and components by their inventory
+identifiers (ne-id, component-id). Uncontrolled disclosure may:<a href="#section-7-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-6.1">
+          <p id="section-7-6.1.1">Enable association of inventory identifiers with physical facility
+structures and geographic coordinates<a href="#section-7-6.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-6.2">
+          <p id="section-7-6.2.1">Reveal facility layouts, equipment density, and rack physical
+security characteristics when combined with other network data<a href="#section-7-6.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-6.3">
+          <p id="section-7-6.3.1">Expose precise geographic coordinates (when configured), which may
+facilitate physical location identification<a href="#section-7-6.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-6.4">
+          <p id="section-7-6.4.1">Indicate physical protection levels through rack security
+classifications<a href="#section-7-6.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
 </section>
 </div>
 <div id="iana-considerations">
