@@ -74,7 +74,7 @@ the base inventory with comprehensive location data.
 
 # Introduction
 
-NEs can be grouped by location to provide more information for
+Network Elements (NEs) can be grouped by location to provide more information for
 network planning, deployment, and maintenance (e.g., easily locate
 problematic NEs, optimize network resources, or help planning
 forecasts). The location can reflect outdoor or indoor information.
@@ -84,8 +84,7 @@ poles, or other mount places.
 
 The information about sites, equipment rooms, and other more precise
 locations is critical, but it cannot be automatically populated and
-retrieved from network elements (NEs). Instead, it is usually
-configured manually.
+retrieved from NEs. Instead, it is usually configured manually.
 
 The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
@@ -96,8 +95,6 @@ The Network Inventory location model is classified as a network model (Section 3
 
 The YANG data model in this document conforms to the Network
 Management Datastore Architecture (NMDA) defined in {{!RFC8342}}.
-
-Note: The NMDA design needs to be revisited once the module is stable per (Section 4.23.2 of {{?I-D.ietf-netmod-rfc8407bis}}).
 
 ## Editorial Note (To be removed by RFC Editor)
 
@@ -188,7 +185,7 @@ attributes. The height, depth and width are described by Figure 2
 Note: Further discussion is needed to decide whether to separate
 "racks" from the list of "location".
 
-~~~~ ascii-art
+~~~~ aasvg
                           ----------------      ---
                           /|              /|      |
                          / |             / |      |
@@ -228,6 +225,7 @@ The rack attributes include:
  +--ro racks
     +--ro rack* [id]
        +--ro id                     string
+       +--ro rack-class?            identityref
        +--ro uuid?                  yang:uuid
        +--ro name?                  string
        +--ro alias?                 string
@@ -259,7 +257,7 @@ Max-voltage: the maximum voltage supported by the rack.
 
 # YANG Data model for Network Inventory Location
 
-The "ietf-ni-location" module uses types defined in {{!RFC9179}}, {{!I-D.ietf-ivy-network-inventory-yang}}.
+The "ietf-ni-location" module uses types defined in {{!RFC9911}}, {{!RFC9179}}, and {{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~~~~~~~ yang
 {::include ./ietf-ni-location.yang}
@@ -315,29 +313,19 @@ A parallel "location-planning" container (read-write) may be introduced
 
 # Security Considerations
 
-This section uses the template described in {{Section 3.7 of ?I-D.ietf-netmod-rfc8407bis}}.
+This section is modeled after the template described in {{Section 3.7.1 of ?RFC9907}}.
 
 The "ietf-ni-location" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
-NETCONF {{!RFC6241}} or RESTCONF {{!RFC8040}}. These protocols have to
+Network Configuration Protocol (NETCONF) {{!RFC6241}}
+and RESTCONF {{!RFC8040}}.  These YANG-based management protocols (1) have to
 use a secure transport layer (e.g., SSH {{!RFC6242}}, TLS {{!RFC8446}}, and
-QUIC {{!RFC9000}}) and have to use mutual authentication.
+QUIC {{!RFC9000}}) and (2) have to use mutual authentication.
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
 provides the means to restrict access for particular NETCONF or
 RESTCONF users to a preconfigured subset of all available NETCONF or
 RESTCONF protocol operations and content.
-
-There are a number of data nodes defined in this YANG module that are
-writable/creatable/deletable (i.e., config true, which is the
-default). All writable data nodes are likely to be reasonably sensitive or vulnerable
-in some network environments. Write operations (e.g., edit-config)
-and delete operations to these data nodes without proper protection
-or authentication can have a negative effect on network operations.
-The following subtrees and data nodes have particular
-sensitivities/vulnerabilities:
-
-'locations': The list may be used to track the set of network elements.
 
 Some of the readable data nodes in this YANG module may be considered
 sensitive or vulnerable in some network environments. It is thus
@@ -345,14 +333,21 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-Since this module identifies locations, authors using this module
-SHOULD consider any privacy issues that may arise when the data
-is readable (e.g., customer device locations, etc).
+'locations': This list reveals physical deployment positions,
+      facility structures, and geographic distribution of
+      network elements.  Uncontrolled disclosure may enable
+      mapping of critical infrastructure, leading to physical
+      security or operational risks.
+
+"rack-class": This leaf indicates the security classification of a rack.
+Unauthorized disclosure of rack security classification can reveal physical security
+      characteristics of critical infrastructure and network equipment
+      deployments.
 
 # IANA Considerations
 
-IANA is requested to register the following URI in the "ns" subregistry within
-the "IETF XML Registry" {{!RFC3688}}:
+IANA is requested to register the following URI in the "ns" registry within
+the "IETF XML Registry" group {{!RFC3688}}:
 
 ~~~~
 URI:  urn:ietf:params:xml:ns:yang:ietf-ni-location
@@ -361,7 +356,7 @@ XML:  N/A; the requested URI is an XML namespace.
 ~~~~
 
 IANA is requested to register the following YANG module in the "YANG Module
-Names" subregistry {{!RFC6020}} within the "YANG Parameters" registry.
+Names" registry {{!RFC6020}} within the "YANG Parameters" registry group.
 
 ~~~~
 Name:  ietf-ni-location
@@ -394,7 +389,7 @@ Site: Foo-Enterprise-Campus
 
 The following shows the location data instance:
 
-~~~~ ascii-art
+~~~~ json
 {
   "ietf-ni-location:locations": {
     "location": [
@@ -500,7 +495,7 @@ Site: Foo-DC
 
 The following shows the location data instance:
 
-~~~~ ascii-art
+~~~~ json
 {
   "ietf-ni-location:locations": {
     "location": [

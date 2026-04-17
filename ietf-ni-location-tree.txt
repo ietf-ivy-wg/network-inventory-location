@@ -49,6 +49,7 @@ module: ietf-ni-location
        +--ro racks
           +--ro rack* [id]
              +--ro id                     string
+             +--ro rack-class?            identityref
              +--ro uuid?                  yang:uuid
              +--ro name?                  string
              +--ro alias?                 string
@@ -68,4 +69,3 @@ module: ietf-ni-location
              |  +--ro component-ref?       leafref
              +--ro timestamp?             yang:date-and-time
              +--ro valid-until?           yang:date-and-time
-

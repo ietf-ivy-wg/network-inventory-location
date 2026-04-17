@@ -6,7 +6,7 @@ module ietf-ni-location {
   import ietf-yang-types {
     prefix yang;
     reference
-      "RFC 6991: Common YANG Data Types";
+      "RFC 9911: Common YANG Data Types";
   }
   import ietf-network-inventory {
     prefix nwi;
@@ -52,7 +52,7 @@ module ietf-ni-location {
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2026-02-28 {
+  revision 2026-04-16 {
     description
       "Initial version";
     reference
@@ -62,6 +62,40 @@ module ietf-ni-location {
   }
 
   /* Identities */
+  /* Identities for rack classification */
+
+  identity rack-class-type {
+    description
+      "Base identity for generic rack classification based on
+       physical security characteristics.
+       This identity is designed to be extended by regional
+       or vendor-specific rack classes.";
+  }
+
+  identity rack-standard {
+    base rack-class-type;
+    description
+      "Standard general-purpose rack.";
+  }
+
+  identity rack-secure-baseline {
+    base rack-class-type;
+    description
+      "Baseline secure lockable rack.";
+  }
+
+  identity rack-secure-medium {
+    base rack-class-type;
+    description
+      "Medium security lockable rack.";
+  }
+
+  identity rack-secure-high {
+    base rack-class-type;
+    description
+      "High security rack.";
+  }
+
   /* Typedef */
 
   typedef ni-location-ref {
@@ -209,6 +243,7 @@ module ietf-ni-location {
     description
       "Grouping for rack attributes.";
     container racks {
+      config false; // Enforce Read-Only     
       description
         "Top-level container for the list of racks.";
       list rack {
@@ -220,6 +255,13 @@ module ietf-ni-location {
           type string;
           description
             "An identifier that uniquely identifies the rack.";
+        }
+        leaf rack-class {
+          type identityref {
+            base rack-class-type;
+          }
+          description
+            "Classification of the rack.";
         }
         uses nwi:basic-common-entity-attributes;
         container rack-location {
@@ -327,4 +369,3 @@ module ietf-ni-location {
     uses locations;
   }
 }
-
