@@ -5,14 +5,14 @@
 Network Inventory YANG                                             B. Wu
 Internet-Draft                                                    Huawei
 Intended status: Standards Track                              S. Belotti
-Expires: 18 October 2026                                           Nokia
+Expires: 19 October 2026                                           Nokia
                                                           J.-F. Bouquier
                                                                 Vodafone
                                                             F. Peruzzini
                                                                 FiberCop
                                                                P. Bedard
                                                                    Cisco
-                                                           16 April 2026
+                                                           17 April 2026
 
 
             A YANG Data Model for Network Inventory Location
@@ -57,7 +57,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 18 October 2026.
+   This Internet-Draft will expire on 19 October 2026.
 
 Copyright Notice
 
@@ -97,18 +97,17 @@ Table of Contents
 
 1.  Introduction
 
-   NEs can be grouped by location to provide more information for
-   network planning, deployment, and maintenance (e.g., easily locate
-   problematic NEs, optimize network resources, or help planning
-   forecasts).  The location can reflect outdoor or indoor information.
-   An indoor location may be represented as a building, room, or other
-   similar organizational structures.  Outdoor locations can be walls,
-   poles, or other mount places.
+   Network Elements (NEs) can be grouped by location to provide more
+   information for network planning, deployment, and maintenance (e.g.,
+   easily locate problematic NEs, optimize network resources, or help
+   planning forecasts).  The location can reflect outdoor or indoor
+   information.  An indoor location may be represented as a building,
+   room, or other similar organizational structures.  Outdoor locations
+   can be walls, poles, or other mount places.
 
    The information about sites, equipment rooms, and other more precise
    locations is critical, but it cannot be automatically populated and
-   retrieved from network elements (NEs).  Instead, it is usually
-   configured manually.
+   retrieved from NEs.  Instead, it is usually configured manually.
 
    The Network Inventory location model is to record physical locations,
    such as sites, building, equipment rooms, racks, and so on.
@@ -122,9 +121,6 @@ Table of Contents
 
    The YANG data model in this document conforms to the Network
    Management Datastore Architecture (NMDA) defined in [RFC8342].
-
-   Note: The NMDA design needs to be revisited once the module is stable
-   per (Section 4.23.2 of [I-D.ietf-netmod-rfc8407bis]).
 
 1.1.  Editorial Note (To be removed by RFC Editor)
 
@@ -260,6 +256,7 @@ Table of Contents
            +--ro racks
               +--ro rack* [id]
                  +--ro id                     string
+                 +--ro rack-class?            identityref
                  +--ro uuid?                  yang:uuid
                  +--ro name?                  string
                  +--ro alias?                 string
@@ -336,6 +333,7 @@ Table of Contents
               +--ro racks
                  +--ro rack* [id]
                     +--ro id                     string
+                    +--ro rack-class?            identityref
                     +--ro uuid?                  yang:uuid
                     +--ro name?                  string
                     +--ro alias?                 string
@@ -360,8 +358,8 @@ Table of Contents
 
 5.  YANG Data model for Network Inventory Location
 
-   The "ietf-ni-location" module uses types defined in [RFC9179],
-   [I-D.ietf-ivy-network-inventory-yang].
+   The "ietf-ni-location" module uses types defined in [RFC9911],
+   [RFC9179], and [I-D.ietf-ivy-network-inventory-yang].
 
    <CODE BEGINS> file "ietf-ni-location@2026-02-28.yang"
    module ietf-ni-location {
@@ -372,7 +370,7 @@ Table of Contents
      import ietf-yang-types {
        prefix yang;
        reference
-         "RFC 6991: Common YANG Data Types";
+         "RFC 9911: Common YANG Data Types";
      }
      import ietf-network-inventory {
        prefix nwi;
@@ -418,7 +416,7 @@ Table of Contents
         This version of this YANG module is part of RFC XXXX; see
         the RFC itself for full legal notices.";
 
-     revision 2026-02-28 {
+     revision 2026-04-16 {
        description
          "Initial version";
        reference
@@ -428,6 +426,40 @@ Table of Contents
      }
 
      /* Identities */
+     /* Identities for rack classification */
+
+     identity rack-class-type {
+       description
+         "Base identity for generic rack classification based on
+          physical security characteristics.
+          This identity is designed to be extended by regional
+          or vendor-specific rack classes.";
+     }
+
+     identity rack-standard {
+       base rack-class-type;
+       description
+         "Standard general-purpose rack.";
+     }
+
+     identity rack-secure-baseline {
+       base rack-class-type;
+       description
+         "Baseline secure lockable rack.";
+     }
+
+     identity rack-secure-medium {
+       base rack-class-type;
+       description
+         "Medium security lockable rack.";
+     }
+
+     identity rack-secure-high {
+       base rack-class-type;
+       description
+         "High security rack.";
+     }
+
      /* Typedef */
 
      typedef ni-location-ref {
@@ -575,6 +607,7 @@ Table of Contents
        description
          "Grouping for rack attributes.";
        container racks {
+         config false; // Enforce Read-Only
          description
            "Top-level container for the list of racks.";
          list rack {
@@ -586,6 +619,13 @@ Table of Contents
              type string;
              description
                "An identifier that uniquely identifies the rack.";
+           }
+           leaf rack-class {
+             type identityref {
+               base rack-class-type;
+             }
+             description
+               "Classification of the rack.";
            }
            uses nwi:basic-common-entity-attributes;
            container rack-location {
@@ -748,31 +788,20 @@ Table of Contents
 
 7.  Security Considerations
 
-   This section uses the template described in Section 3.7 of
-   [I-D.ietf-netmod-rfc8407bis].
+   This section is modeled after the template described in Section 3.7.1
+   of [RFC9907].
 
    The "ietf-ni-location" YANG module defines a data model that is
    designed to be accessed via YANG-based management protocols, such as
-   NETCONF [RFC6241] or RESTCONF [RFC8040].  These protocols have to use
-   a secure transport layer (e.g., SSH [RFC6242], TLS [RFC8446], and
-   QUIC [RFC9000]) and have to use mutual authentication.
+   Network Configuration Protocol (NETCONF) [RFC6241] and RESTCONF
+   [RFC8040].  These YANG-based management protocols (1) have to use a
+   secure transport layer (e.g., SSH [RFC6242], TLS [RFC8446], and QUIC
+   [RFC9000]) and (2) have to use mutual authentication.
 
    The Network Configuration Access Control Model (NACM) [RFC8341]
    provides the means to restrict access for particular NETCONF or
    RESTCONF users to a preconfigured subset of all available NETCONF or
    RESTCONF protocol operations and content.
-
-   There are a number of data nodes defined in this YANG module that are
-   writable/creatable/deletable (i.e., config true, which is the
-   default).  All writable data nodes are likely to be reasonably
-   sensitive or vulnerable in some network environments.  Write
-   operations (e.g., edit-config) and delete operations to these data
-   nodes without proper protection or authentication can have a negative
-   effect on network operations.  The following subtrees and data nodes
-   have particular sensitivities/vulnerabilities:
-
-   'locations': The list may be used to track the set of network
-   elements.
 
    Some of the readable data nodes in this YANG module may be considered
    sensitive or vulnerable in some network environments.  It is thus
@@ -781,22 +810,28 @@ Table of Contents
    subtrees and data nodes have particular sensitivities/
    vulnerabilities:
 
-   Since this module identifies locations, authors using this module
-   SHOULD consider any privacy issues that may arise when the data is
-   readable (e.g., customer device locations, etc).
+   'locations': This list reveals physical deployment positions,
+   facility structures, and geographic distribution of network elements.
+   Uncontrolled disclosure may enable mapping of critical
+   infrastructure, leading to physical security or operational risks.
+
+   "rack-class": This leaf indicates the security classification of a
+   rack.  Unauthorized disclosure of rack security classification can
+   reveal physical security characteristics of critical infrastructure
+   and network equipment deployments.
 
 8.  IANA Considerations
 
-   IANA is requested to register the following URI in the "ns"
-   subregistry within the "IETF XML Registry" [RFC3688]:
+   IANA is requested to register the following URI in the "ns" registry
+   within the "IETF XML Registry" group [RFC3688]:
 
    URI:  urn:ietf:params:xml:ns:yang:ietf-ni-location
    Registrant Contact:  The IESG.
    XML:  N/A; the requested URI is an XML namespace.
 
    IANA is requested to register the following YANG module in the "YANG
-   Module Names" subregistry [RFC6020] within the "YANG Parameters"
-   registry.
+   Module Names" registry [RFC6020] within the "YANG Parameters"
+   registry group.
 
    Name:  ietf-ni-location
    Maintained by IANA?  N
@@ -865,6 +900,10 @@ Table of Contents
               RFC 9179, DOI 10.17487/RFC9179, February 2022,
               <https://www.rfc-editor.org/rfc/rfc9179>.
 
+   [RFC9911]  Schönwälder, J., Ed., "Common YANG Data Types", RFC 9911,
+              DOI 10.17487/RFC9911, December 2025,
+              <https://www.rfc-editor.org/rfc/rfc9911>.
+
 9.2.  Informative References
 
    [I-D.ietf-ccamp-network-inventory-yang]
@@ -886,6 +925,11 @@ Table of Contents
    [RFC8340]  Bjorklund, M. and L. Berger, Ed., "YANG Tree Diagrams",
               BCP 215, RFC 8340, DOI 10.17487/RFC8340, March 2018,
               <https://www.rfc-editor.org/rfc/rfc8340>.
+
+   [RFC9907]  Bierman, A., Boucadair, M., Ed., and Q. Wu, "Guidelines
+              for Authors and Reviewers of Documents Containing YANG
+              Data Models", BCP 216, RFC 9907, DOI 10.17487/RFC9907,
+              March 2026, <https://www.rfc-editor.org/rfc/rfc9907>.
 
 Appendix A.  Examples
 
@@ -909,83 +953,83 @@ A.1.  Non-Rack Deployment: Access Point
 
    The following shows the location data instance:
 
-  {
-    "ietf-ni-location:locations": {
-      "location": [
-        {
-          "id": "Foo-Enterprise-Campus",
-          "uuid": "550e8400-e29b-41d4-a716-446655440000",
-          "name": "Foo Enterprise Campus",
-          "type": "site",
-          "timestamp": "2026-01-15T08:30:00Z"
-        },
-        {
-          "id": "Building-A",
-          "uuid": "550e8400-e29b-41d4-a716-446655440001",
-          "name": "Building A",
-          "type": "building",
-          "parent": "Foo-Enterprise-Campus",
-          "timestamp": "2026-01-15T08:30:00Z"
-        },
-        {
-          "id": "Floor-2",
-          "uuid": "550e8400-e29b-41d4-a716-446655440002",
-          "name": "Floor 2",
-          "type": "floor",
-          "parent": "Building-A",
-          "timestamp": "2026-01-15T08:30:00Z"
-        },
-        {
-          "id": "Corridor-East",
-          "uuid": "550e8400-e29b-41d4-a716-446655440003",
-          "name": "East Corridor",
-          "alias": "Corridor-2F-East",
-          "description": "East corridor on Floor 2, AP deployment area",
-          "type": "corridor",
-          "parent": "Floor-2",
-          "timestamp": "2026-01-15T08:30:00Z",
-          "valid-until": "2030-12-31T23:59:59Z",
-          "physical-address": {
-            "address": "123 Foo Street, Floor 2 East Corridor",
-            "postal-code": "12345",
-            "state": "Foo-State",
-            "city": "Foo-City",
-            "country-code": "ZZ"
-          },
-          "geo-location": {
-            "reference-frame": {
-              "astronomical-body": "earth",
-              "geodetic-system": {
-                "geodetic-datum": "WGS-84",
-                "coord-accuracy": 5.0,
-                "height-accuracy": 10.0
-              }
-            },
-            "ellipsoid": {
-              "latitude": 40.7128,
-              "longitude": -74.0060,
-              "height": 15.0
-            },
-            "velocity": {
-              "v-north": 0.0,
-              "v-east": 0.0,
-              "v-up": 0.0
-            },
-            "timestamp": "2026-01-15T08:30:00Z",
-            "valid-until": "2030-12-31T23:59:59Z"
-          },
-          "contained-chassis": [
-            {
-              "chassis-id": 1,
-              "ne-ref": "AP-Corridor-East-01",
-              "component-ref": "chassis-1"
-            }
-          ]
-        }
-      ],
-      "racks": []
-    }
-  }
+   {
+     "ietf-ni-location:locations": {
+       "location": [
+         {
+           "id": "Foo-Enterprise-Campus",
+           "uuid": "550e8400-e29b-41d4-a716-446655440000",
+           "name": "Foo Enterprise Campus",
+           "type": "site",
+           "timestamp": "2026-01-15T08:30:00Z"
+         },
+         {
+           "id": "Building-A",
+           "uuid": "550e8400-e29b-41d4-a716-446655440001",
+           "name": "Building A",
+           "type": "building",
+           "parent": "Foo-Enterprise-Campus",
+           "timestamp": "2026-01-15T08:30:00Z"
+         },
+         {
+           "id": "Floor-2",
+           "uuid": "550e8400-e29b-41d4-a716-446655440002",
+           "name": "Floor 2",
+           "type": "floor",
+           "parent": "Building-A",
+           "timestamp": "2026-01-15T08:30:00Z"
+         },
+         {
+           "id": "Corridor-East",
+           "uuid": "550e8400-e29b-41d4-a716-446655440003",
+           "name": "East Corridor",
+           "alias": "Corridor-2F-East",
+           "description": "East corridor on Floor 2, AP deployment area",
+           "type": "corridor",
+           "parent": "Floor-2",
+           "timestamp": "2026-01-15T08:30:00Z",
+           "valid-until": "2030-12-31T23:59:59Z",
+           "physical-address": {
+             "address": "123 Foo Street, Floor 2 East Corridor",
+             "postal-code": "12345",
+             "state": "Foo-State",
+             "city": "Foo-City",
+             "country-code": "ZZ"
+           },
+           "geo-location": {
+             "reference-frame": {
+               "astronomical-body": "earth",
+               "geodetic-system": {
+                 "geodetic-datum": "WGS-84",
+                 "coord-accuracy": 5.0,
+                 "height-accuracy": 10.0
+               }
+             },
+             "ellipsoid": {
+               "latitude": 40.7128,
+               "longitude": -74.0060,
+               "height": 15.0
+             },
+             "velocity": {
+               "v-north": 0.0,
+               "v-east": 0.0,
+               "v-up": 0.0
+             },
+             "timestamp": "2026-01-15T08:30:00Z",
+             "valid-until": "2030-12-31T23:59:59Z"
+           },
+           "contained-chassis": [
+             {
+               "chassis-id": 1,
+               "ne-ref": "AP-Corridor-East-01",
+               "component-ref": "chassis-1"
+             }
+           ]
+         }
+       ],
+       "racks": []
+     }
+   }
 
 A.2.  Distributed Multi-Chassis Network Element
 
