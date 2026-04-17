@@ -75,7 +75,8 @@ module ietf-ni-location {
   identity rack-standard {
     base rack-class-type;
     description
-      "Standard general-purpose rack.";
+      "Standard general-purpose rack without physical locking
+       mechanisms.";
   }
 
   identity rack-secure-baseline {
@@ -93,7 +94,7 @@ module ietf-ni-location {
   identity rack-secure-high {
     base rack-class-type;
     description
-      "High security rack.";
+      "High security lockable rack.";
   }
 
   /* Typedef */
