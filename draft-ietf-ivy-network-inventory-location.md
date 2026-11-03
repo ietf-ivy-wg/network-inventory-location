@@ -64,12 +64,6 @@ location (e.g., site, room, rack, geo-location data), which provides
 location information with different granularity levels for
 inventoried network elements.
 
-Accurate location information is useful for network planning,
-deployment, and maintenance. However, such information cannot be
-obtained or verified from the Network Elements themselves. This
-document defines a location model for network inventory that extends
-the base inventory with comprehensive location data.
-
 --- middle
 
 # Introduction
@@ -83,18 +77,23 @@ similar organizational structures. Outdoor locations can be walls,
 poles, or other mount places.
 
 The information about sites, equipment rooms, and other more precise
-locations is critical, but it cannot be automatically populated and
-retrieved from NEs. Instead, it is usually configured manually.
+locations is critical for network planning, deployment, and maintenance.
 
 The Network Inventory location model is to record physical locations,
 such as sites, building, equipment rooms, racks, and so on.
 Additionally, it includes provisions for physical addresses or geo-
-location data (geographic coordinates). The location model augments the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}} to enrich NEs with location information.
+location data (geographic coordinates). The location model augments
+the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}}
+to enrich NEs with location information.
 
-The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?I-D.ietf-netmod-rfc8407bis}}).
+The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?RFC9907}}).
 
-The YANG data model in this document conforms to the Network
-Management Datastore Architecture (NMDA) defined in {{!RFC8342}}.
+As outlined in Section 6, the network inventory location data model
+provides a read-only perspective of the actual location data of which
+a network controller is aware, covering the hardware components that
+are actually installed within the network. Therefore, other inventory
+location data (e.g., location for inactive assets or warehouse
+spares, or planned sites) are outside the scope of this model.
 
 ## Editorial Note (To be removed by RFC Editor)
 
