@@ -69,31 +69,25 @@ inventoried network elements.
 # Introduction
 
 Network Elements (NEs) can be grouped by location to provide more information for
-network planning, deployment, and maintenance (e.g., easily locate
-problematic NEs, optimize network resources, or help planning
-forecasts). The location can reflect outdoor or indoor information.
-An indoor location may be represented as a building, room, or other
-similar organizational structures. Outdoor locations can be walls,
-poles, or other mount places.
+network planning, deployment, and maintenance. For example, location information
+enables operators to rapidly locate problematic NEs, optimize resource usage,
+and perform capacity forecasting. The location may describe outdoor or indoor
+placements: indoor hierarchies include sites, buildings, equipment rooms.
+Racks are separate physical mounting containers that are associated with a location.
+outdoor locations include mounting infrastructure such as poles and walls.
 
-The information about sites, equipment rooms, and other more precise
-locations is critical for network planning, deployment, and maintenance.
-
-The Network Inventory location model is to record physical locations,
-such as sites, building, equipment rooms, racks, and so on.
-Additionally, it includes provisions for physical addresses or geo-
-location data (geographic coordinates). The location model augments
-the base network inventory {{!I-D.ietf-ivy-network-inventory-yang}}
-to enrich NEs with location information.
+This document defines a YANG data model for physical location records in the network inventory.
+The model captures containment hierarchy information, along with optional
+postal addresses and geo-location data (geographic coordinates).
+It extends the base network inventory model in {{!I-D.ietf-ivy-network-inventory-yang}}
+to attach physical placement context to managed inventory items.
 
 The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?RFC9907}}).
 
-As outlined in Section 6, the network inventory location data model
-provides a read-only perspective of the actual location data of which
-a network controller is aware, covering the hardware components that
-are actually installed within the network. Therefore, other inventory
-location data (e.g., location for inactive assets or warehouse
-spares, or planned sites) are outside the scope of this model.
+The model provides a read-only view of authoritative location data maintained by a network controller,
+covering only NEs and hardware components physically deployed in the live network.
+Warehouse spares, inactive assets, and planned but undeployed sites are out of scope.
+Details on the source and update semantics of location records are provided in Section 6.
 
 ## Editorial Note (To be removed by RFC Editor)
 
