@@ -27,7 +27,7 @@ author:
 -
     name: Sergio Belotti
     org: Nokia
-    email: sergio.belotti@nokia.com
+    email: s.belotti.ietf@gmail.com
 -
     ins: J-F. Bouquier
     name: Jean-Francois Bouquier
@@ -84,10 +84,10 @@ to attach physical placement context to managed inventory items.
 
 The Network Inventory location model is classified as a network model (Section 3.5.1 of {{?RFC9907}}).
 
-The model provides a read-only view of authoritative location data maintained by a network controller,
-covering only NEs and hardware components physically deployed in the live network.
+The model provides a read-only view of location data maintained by an authoritative management system,
+covering physical location entities (sites, rooms, racks), NEs, and hardware components physically deployed in the live network.
 Warehouse spares, inactive assets, and planned but undeployed sites are out of scope.
-Details on the source and update semantics of location records are provided in Section 6.
+Details on the source and update semantics of location records are provided in {{sec-operation}}.
 
 ## Editorial Note (To be removed by RFC Editor)
 
@@ -105,39 +105,45 @@ Please apply the following replacements:
 The following terms are defined in {{!RFC7950}} and are not
 redefined here:
 
-*  client
 *  server
 *  augment
 *  data model
 *  data node
-The following terms are defined in {{!RFC6241}} and are not redefined
-here:
-*  configuration data
-*  state data
+
+Also, this document uses terms defined in Section 2.2 of {{!I-D.ietf-ivy-network-inventory-yang}}, specifically:
+
+*  Network Inventory
+*  Network Element
+*  Component
+*  Chassis
+
 The tree diagram used in this document follows the notation defined
 in {{?RFC8340}}.
 
- Also, this document uses terms defined in {{!I-D.ietf-ivy-network-inventory-yang}}.
+Some examples in this document contain long lines that may be folded, as described in {{?RFC8792}}.
 
 # Hierarchical Locations of Network Inventory
 
 The "location" list is generalized to support a variety of geographic
-location, such as sites, rooms, buildings.
+location, such as sites, buildings, and equipment rooms.
 
-A site represents a general geographic location to group a set of NEs
-and corresponding inventory components. NEs, racks, equipment rooms,
-and buildings can be grouped within a site.
-
-A room is a facility, a space for network elements and other
-equipment (such as servers, storage) with power supply systems, air
-conditioning system, etc.
+A site represents a general geographic location to group a set of NEs,
+inventory components, racks, and buildings. A room is a facility,
+a space for network elements and other equipment (such as compute
+servers, storage) with power supply systems, air conditioning system, etc.
 
 Locations can be nested to form a hierarchy. For example, buildings
 may be within a site, and a room may be within a building.
-
-The "location-type" is defined as a YANG identity to identify the
+The "type" leaf within "location" list is a string used to identify the
 type of an inventory location, which may be site, equipment room,
-building, etc.
+building, or pole.
+
+The location list includes a contained‑chassis list. This list references
+chassis hardware instances that are deployed directly within this spatial
+location without being mounted inside a rack (for example wall‑mounted access
+points or outdoor optical devices). Each contained‑chassis entry uses ne‑ref and
+component‑ref leafrefs pointing to network‑element and component records from
+{{!I-D.ietf-ivy-network-inventory-yang}}.
 
 ~~~~ ascii-art
 +--ro locations
@@ -165,9 +171,19 @@ building, etc.
 # Rack
 
 "racks" represent physical equipment racks in which NEs can be
-installed, which facilitate device maintenance. Through "rack-
-location", each rack can be assigned to a site or a specific location
-within a site, such as an equipment room.
+installed, which facilitate device maintenance.
+Through "rack-location", each rack can be assigned to a site
+or a specific location within a site, such as an equipment room.
+
+A rack is modelled as an independent inventory object with a reference
+to a location. With this design, a rack retains its stable inventory
+identity when physically moved to another location.
+
+"racks" defines its own contained‑chassis list. This list documents
+chassis hardware installed in specific U‑slot positions inside this rack.
+Each entry uses ne‑ref and component‑ref to reference corresponding records
+in {{!I-D.ietf-ivy-network-inventory-yang}}. The key relative‑position expresses the U‑slot
+position inside the rack.
 
 Each rack is assigned a unique ID and a name in the context of a
 facility, e.g. a site. A rack may have some specific attributes,
@@ -257,52 +273,41 @@ The "ietf-ni-location" module uses types defined in {{!RFC9911}}, {{!RFC9179}}, 
 ~~~~~~~~~~
 {: sourcecode-markers="true" sourcecode-name="ietf-ni-location@2026-07-06.yang"}
 
-# Operational Considerations
+# Operational Considerations {#sec-operation}
 
-This model serves as a complement to the base inventory, providing
- a read-only perspective of network inventory location information
- known to the controller. It reports the physical locations of network
- elements and components installed in the network, enabling queries
- for site, rack, and other location-related information associated
- with network elements and components.
+This model complements {{!I-D.ietf-ivy-network-inventory-yang}} to
+enable operators to associate inventory items with physical location
+context. It supports operational workflows such as fault localization,
+site capacity planning, and physical asset verification by querying
+location-to-asset and asset-to-location relationships.
 
-When used in brownfield scenarios, it is worth noting that existing
- deployments are based on proprietary inventory OSS solutions, and
- the migration path is highly dependent on the specific proprietary
- implementation.
-
-The model is designed based on the controller maintaining authoritative
- location data through automated tooling, while OSS systems consume
- this data as read-only operational state. Sources of controller location
- data may include RFID (Radio Frequency IDentification) tooling, geolocation services, as well as manual
- entry via controller interfaces.
-
-As this data is read-only, the controller does not support OSS modification
- of controller location records.
-
-OSS systems and other management applications obtain location information
- via standard YANG retrieval operations (NETCONF, RESTCONF), such as
- querying network elements associated with a specific site or rack.
+An authoritative management system maintains the source of location data.
+This system MAY be a network controller, dedicated inventory management
+platform, or other management system. Location records can be populated
+by automated tooling including RFID and geolocation services, or via manual
+entry through the authoritative system’s interfaces. External management
+applications consume this data as operational state using standard NETCONF
+or RESTCONF retrieval operations. Since all location data exposed by this
+model is read-only, the authoritative system does not permit external
+systems to modify these location records.
 
 In large-scale inventories containing numerous network elements and
- components, querying location associations can impose a load on the
- server. To optimize retrieval and avoid overwhelming the server, mechanisms
- such as RESTCONF or NETCONF pagination should be utilized for queries
- involving large result sets.
+components, querying location associations can impose a load on the server.
+Mechanisms such as RESTCONF or NETCONF pagination should be utilized for
+queries involving large result sets.
 
-Data quality is indicated through timestamps recording the last update
- time, as well as an optional expiration time for location validity.
+Each location record includes a timestamp for the last update, plus an optional
+valid-until leaf that sets an expiration for the record’s validity. Before
+relying on a location record for field dispatch or network planning, consumers
+SHOULD confirm that either a physical address or geo-location is provided,
+and that valid-until is either omitted or holds a future time. Once valid-until
+has elapsed, the location record MUST be considered stale and MUST NOT be used
+for operational decisions.
 
-Before using a location for field dispatch or planning, verification
- is required to ensure at least one of physical-address or geo-location
- is present, and that the valid-until leaf is either not present or indicates
- a future time. Once the valid-until time has passed, the location MUST be
- considered stale and MUST NOT be used for operational purposes.
-
-
-A parallel "location-planning" container (read-write) may be introduced
- in future revisions to support intent-based configuration, where OSS provides
- planning-level location targets. This is outside the scope of the current document.
+A distinct read-write "location-planning" container may be introduced
+in future revisions to support intent-based configuration, where OSS provides
+planning-level location targets. This capability is outside the scope of the
+document.
 
 # Security Considerations
 
@@ -312,8 +317,9 @@ The "ietf-ni-location" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 Network Configuration Protocol (NETCONF) {{!RFC6241}}
 and RESTCONF {{!RFC8040}}.  These YANG-based management protocols (1) have to
-use a secure transport layer (e.g., SSH {{!RFC6242}}, TLS {{!RFC8446}}, and
-QUIC {{!RFC9000}}) and (2) have to use mutual authentication.
+use a secure transport layer (e.g., Secure Shell (SSH) {{!RFC6242}}, TLS {{!RFC9846}}, and
+QUIC {{!RFC9000}}) and (2) have to use mutual authentication
+(e.g., for SSH, the SSH Authentication Protocol {{?RFC4252}}).
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
 provides the means to restrict access for particular NETCONF or
@@ -326,13 +332,15 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-'locations': This list reports physical deployment
+"/nilo:locations": This subtree reports physical deployment
 information including facility structures (sites, buildings, rooms),
-rack physical attributes (dimensions, power capacity, security
-classification), and optionally geographic coordinates. The list also
-references network elements and components by their inventory
-identifiers (ne-id, component-id). Uncontrolled disclosure may:
+and optionally geographic coordinates.
 
+"/nilo:racks": This subtree reports rack physical attributes
+(dimensions, power capacity, security classification).
+
+Both subtrees reference network elements and components by their inventory
+identifiers (ne-id, component-id). Uncontrolled disclosure may:
 *  Enable association of inventory identifiers with physical facility
    structures and geographic coordinates
 *  Reveal facility layouts, equipment density, and rack physical
@@ -341,6 +349,10 @@ identifiers (ne-id, component-id). Uncontrolled disclosure may:
    facilitate physical location identification
 *  Indicate physical protection levels through rack security
    classifications
+
+The "ietf-ni-location" YANG module augments the base network inventory
+model defined in {{!I-D.ietf-ivy-network-inventory-yang}}. All security
+considerations specified in the base model apply to this extension module.
 
 # IANA Considerations
 
