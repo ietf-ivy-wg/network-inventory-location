@@ -372,7 +372,7 @@ Names" registry {{!RFC6020}} within the "YANG Parameters" registry group.
 Name:  ietf-ni-location
 Maintained by IANA?  N
 Namespace:  urn:ietf:params:xml:ns:yang:ietf-ni-location
-Prefix:  nil
+Prefix:  nilo
 Reference:  RFC XXXX
 ~~~~
 
