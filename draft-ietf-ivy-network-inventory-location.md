@@ -125,7 +125,7 @@ Some examples in this document contain long lines that may be folded, as describ
 # Hierarchical Locations of Network Inventory
 
 The "location" list is generalized to support a variety of geographic
-location, such as sites, buildings, and equipment rooms.
+location types, such as sites, buildings, and equipment rooms.
 
 A site represents a general geographic location to group a set of NEs,
 inventory components, racks, and buildings. A room is a facility,
