@@ -1,7 +1,7 @@
 module ietf-ni-location {
   yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-ni-location";
-  prefix nil;
+  prefix nilo;
 
   import ietf-yang-types {
     prefix yang;
@@ -22,21 +22,21 @@ module ietf-ni-location {
   organization
     "IETF Network Inventory YANG (ivy) Working Group";
   contact
-    "WG Web:   <https://datatracker.ietf.org/wg/ivy>
-     WG List:  <mailto:inventory-yang@ietf.org>
+    "WG Web:   https://datatracker.ietf.org/wg/ivy
+     WG List:  IVY <mailto:ivy@ietf.org>
 
      Editor: Bo Wu
           <lana.wubo@huawei.com>
      Editor: Sergio Belotti
-          <sergio.belotti@nokia.com>
+          <s.belotti.ietf@gmail.com>
      Editor: Jean-Francois Bouquier
           <jeff.bouquier@vodafone.com>
      Editor: Fabio Peruzzini
-          <fabio.peruzzini@telecomitalia.it>
+          <fabio.peruzzini@fibercop.com>
      Editor: Phil Bedard
           <phbedard@cisco.com>";
   description
-    "This YANG module defines a model for Network Inventory
+    "This module defines a YANG model for Network Inventory
      location.
 
      Copyright (c) 2026 IETF Trust and the persons
@@ -49,10 +49,17 @@ module ietf-ni-location {
      Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
 
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL', 'SHALL
+     NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED', 'NOT RECOMMENDED',
+     'MAY', and 'OPTIONAL' in this document are to be interpreted as
+     described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
+     they appear in all capitals, as shown here.
+
      This version of this YANG module is part of RFC XXXX; see
      the RFC itself for full legal notices.";
 
-  revision 2026-07-06 {
+  revision 2026-11-06 {
     description
       "Initial version";
     reference
@@ -67,42 +74,39 @@ module ietf-ni-location {
   identity rack-class-type {
     description
       "Base identity for generic rack classification based on
-       physical security characteristics.
-       This identity is designed to be extended by regional
-       or vendor-specific rack classes.";
+       physical security characteristics. This identity is
+       designed to be extended by regional, operator, or
+       vendor-specific rack classes. It provides security
+       metadata for rack cabinets indicating whether access
+       requires a key or credential managed under a security
+       process.";
   }
 
   identity rack-standard {
     base rack-class-type;
     description
-      "Standard general-purpose rack without physical locking
-       mechanisms.";
+      "Standard general-purpose rack. Access to the rack
+       does not require a key or credential managed through
+       a security process.";
   }
 
   identity rack-secure-baseline {
     base rack-class-type;
     description
-      "Baseline secure lockable rack.";
-  }
-
-  identity rack-secure-medium {
-    base rack-class-type;
-    description
-      "Medium security lockable rack.";
-  }
-
-  identity rack-secure-high {
-    base rack-class-type;
-    description
-      "High security lockable rack.";
+      "Lockable rack. Access requires a key or credential
+       managed through the operator's security process.
+       The specific type is deployment-specific, and may
+       include a mechanical key, electronic card, or lock
+       code. Finer security class types are defined via
+       derived identities.";
   }
 
   /* Typedef */
 
   typedef ni-location-ref {
     type leafref {
-      path "/nwi:network-inventory/nil:locations/nil:location"
-         + "/nil:id";
+      path "/nwi:network-inventory/nilo:locations/nilo:location"
+         + "/nilo:id";
     }
     description
       "This type is used by data models that need to reference
@@ -111,48 +115,10 @@ module ietf-ni-location {
 
   /* Grouping */
 
-  grouping physical-address {
+  augment "/nwi:network-inventory" {
     description
-      "Grouping for physical address information.";
-    container physical-address {
-      description
-        "Top-level container for the physical address.";
-      leaf address {
-        type string;
-        description
-          "Specifies an address (number and street).";
-      }
-      leaf postal-code {
-        type string;
-        description
-          "Specifies a postal code.";
-      }
-      leaf state {
-        type string;
-        description
-          "Specifies a state. This leaf can also be
-           used to describe a region for a country that
-           does not have states.";
-      }
-      leaf city {
-        type string;
-        description
-          "Specifies a city.";
-      }
-      leaf country-code {
-        type string {
-          pattern '[A-Z]{2}';
-        }
-        description
-          "Specifies a country.
-           Expressed as ISO ALPHA-2 code.";
-      }
-    }
-  }
-
-  grouping locations {
-    description
-      "Grouping for locations.";
+      "Provides location and rack information for
+       network inventory.";
     container locations {
       config false;
       description
@@ -160,11 +126,17 @@ module ietf-ni-location {
       list location {
         key "id";
         description
-          "List of locations within the network.";
+          "List of locations within the network. The 'id' leaf is the
+           key and MUST be unique across all location entries; it is
+           not scoped to the parent location. Short human-readable
+           labels may be used, but they must be qualified when they
+           would collide under different parents.
+           The 'name' node is for display and has no global uniqueness
+           requirement.";
         leaf id {
           type string;
           description
-            "An identifier of the location.";
+            "An identifier of the location, globally unique.";
         }
         uses nwi:basic-common-entity-attributes;
         leaf type {
@@ -173,10 +145,13 @@ module ietf-ni-location {
             "The type of network inventory location, e.g.
              equipment room, building, or site.
              This allows operators to flexibly define custom location
-             types (e.g., 'pole', 'roof', 'floor') based on their
+             types (e.g., 'building', 'room', 'roof') based on their
              specific network scenarios without requiring model
              extensions. String-based types enable dynamic adaptation
-             to heterogeneous organizational naming conventions.";
+             to heterogeneous organizational naming conventions.
+             Operators are advised to maintain a controlled
+             vocabulary for these values to avoid inconsistent
+             spellings and free-text variants.";
         }
         leaf parent {
           type leafref {
@@ -186,10 +161,25 @@ module ietf-ni-location {
             "The identifier of the location that physically contains
              this location.";
         }
+        list contained-chassis {
+          key "chassis-id";
+          description
+            "Chassis directly deployed in this location without a
+             rack. chassis-id is a location-local identifier used to
+             distinguish chassis instances within this location.
+             It is not a global chassis identifier";
+          leaf chassis-id {
+            type string;
+            description
+              "Unique identifier for this chassis instance local
+               to the containing location.";
+          }
+          uses nwi:component-ref;
+        }
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Timestamp when the location was recorded.";
+            "Timestamp when the location was last updated.";
         }
         leaf valid-until {
           type yang:date-and-time;
@@ -198,60 +188,56 @@ module ietf-ni-location {
              If unspecified, the location has no specific
              expiration time.";
         }
-        uses physical-address;
-        uses geo:geo-location;
-        list contained-chassis {
-          key "chassis-id";
+        container physical-address {
           description
-            "Chassis directly deployed in this location without rack.
-             Also used for distributed chassis components that are
-             logically part of a network element but physically
-             located.";
-          leaf chassis-id {
-            type uint32;
+            "Top-level container for the physical address.";
+          leaf address {
+            type string;
             description
-              "Unique identifier for this chassis instance in the
-               location.";
+              "Specifies an address (number and street).";
           }
-          leaf ne-ref {
-            type leafref {
-              path "/nwi:network-inventory/nwi:network-elements"
-                 + "/nwi:network-element/nwi:ne-id";
+          leaf postal-code {
+            type string;
+            description
+              "Specifies a postal code.";
+          }
+          leaf state {
+            type string;
+            description
+              "Specifies a state. This leaf can also be
+               used to describe a region for a country that
+               does not have states.";
+          }
+          leaf city {
+            type string;
+            description
+              "Specifies a city.";
+          }
+          leaf country-code {
+            type string {
+              pattern '[A-Z]{2}';
             }
             description
-              "Reference to the network element this chassis
-               belongs to. Multiple chassis entries may reference
-               the same ne-ref for distributed systems.";
-          }
-          leaf component-ref {
-            type leafref {
-              path
-                "/nwi:network-inventory/nwi:network-elements"
-              + "/nwi:network-element[nwi:ne-id=current()/../ne-ref]"
-              + "/nwi:components/nwi:component/nwi:component-id";
-            }
-            description
-              "Reference to the specific chassis within the
-               network element.";
+              "Specifies a country.
+               Expressed as ISO ALPHA-2 code.";
           }
         }
+        uses geo:geo-location;
       }
-      uses racks;
     }
-  }
-
-  grouping racks {
-    description
-      "Grouping for rack attributes.";
     container racks {
-      config false; // Enforce Read-Only     
+      config false; // Enforce Read-Only
       description
         "Top-level container for the list of racks.";
       list rack {
         key "id";
         description
-          "List of racks within the inventory (e.g., in an
-           equipment room).";
+          "List of racks within the inventory location (e.g., in an
+           equipment room). A rack is an inventory asset in its own
+           right, not a subtype of location. it references the
+           location where it is placed via location-ref.
+           Rack-internal chassis positioning uses relative-position
+           (e.g., U-slot), reflecting the rack as a physical container";
         leaf id {
           type string;
           description
@@ -262,7 +248,8 @@ module ietf-ni-location {
             base rack-class-type;
           }
           description
-            "Classification of the rack.";
+            "Classification of the rack for physical-security
+               unlock process.";
         }
         uses nwi:basic-common-entity-attributes;
         container rack-location {
@@ -287,23 +274,36 @@ module ietf-ni-location {
                the rack is located.";
           }
         }
+        list contained-chassis {
+          key "relative-position";
+          description
+            "The list of chassis within a rack. relative-position
+             (e.g., U-slot) locates the chassis within this rack.";
+          leaf relative-position {
+            type uint8;
+            description
+              "Relative position (e.g., U-slot) of chassis within
+               the rack.";
+          }
+          uses nwi:component-ref;
+        }
         leaf height {
           type uint16;
           units "millimeter";
           description
-            "Rack height.";
+            "Physical height of the rack.";
         }
         leaf width {
           type uint16;
           units "millimeter";
           description
-            "Rack width.";
+            "Physical width of the rack.";
         }
         leaf depth {
           type uint16;
           units "millimeter";
           description
-            "Rack depth.";
+            "Physical depth of the rack.";
         }
         leaf max-voltage {
           type uint16;
@@ -312,46 +312,15 @@ module ietf-ni-location {
             "The maximum voltage supported by the rack.";
         }
         leaf max-allocated-power {
-          type uint16;
+          type uint32;
           units "watts";
           description
             "The maximum allocated power for the rack.";
         }
-        list contained-chassis {
-          key "relative-position";
-          description
-            "The list of chassis within a rack.";
-          leaf relative-position {
-            type uint8;
-            description
-              "Relative position (e.g., U-slot) of chassis within
-               the rack.";
-          }
-          leaf ne-ref {
-            type leafref {
-              path "/nwi:network-inventory/nwi:network-elements"
-                 + "/nwi:network-element/nwi:ne-id";
-            }
-            description
-              "Reference to the network element containing
-               the chassis component.";
-          }
-          leaf component-ref {
-            type leafref {
-              path "/nwi:network-inventory/nwi:network-elements"
-                 + "/nwi:network-element[nwi:ne-id=current()/.."
-                 + "/ne-ref]/nwi:components/nwi:component"
-                 + "/nwi:component-id";
-            }
-            description
-              "The reference to the chassis component within
-               the network element and contained by the rack.";
-          }
-        }
         leaf timestamp {
           type yang:date-and-time;
           description
-            "Timestamp when the rack information was recorded.";
+            "Timestamp when the rack information was last updated.";
         }
         leaf valid-until {
           type yang:date-and-time;
@@ -363,10 +332,5 @@ module ietf-ni-location {
       }
     }
   }
-
-  augment "/nwi:network-inventory" {
-    description
-      "Provides location information for network inventory.";
-    uses locations;
-  }
 }
+
