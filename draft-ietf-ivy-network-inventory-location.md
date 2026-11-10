@@ -74,7 +74,7 @@ enables operators to rapidly locate problematic NEs, optimize resource usage,
 and perform capacity forecasting. The location may describe outdoor or indoor
 placements: indoor hierarchies include sites, buildings, equipment rooms.
 Racks are separate physical mounting containers that are associated with a location.
-outdoor locations include mounting infrastructure such as poles and walls.
+Outdoor locations include mounting infrastructure such as poles and walls.
 
 This document defines a YANG data model for physical location records in the network inventory.
 The model captures containment hierarchy information, along with optional
@@ -281,15 +281,12 @@ context. It supports operational workflows such as fault localization,
 site capacity planning, and physical asset verification by querying
 location-to-asset and asset-to-location relationships.
 
-An authoritative management system maintains the source of location data.
-This system MAY be a network controller, dedicated inventory management
-platform, or other management system. Location records can be populated
+For a given location data, the authoritative management system (e.g., a network controller)
+maintains the data and serves as its source of truth. Location records can be populated
 by automated tooling including RFID and geolocation services, or via manual
 entry through the authoritative system’s interfaces. External management
-applications consume this data as operational state using standard NETCONF
-or RESTCONF retrieval operations. Since all location data exposed by this
-model is read-only, the authoritative system does not permit external
-systems to modify these location records.
+applications consume this data as operational state using YANG-based
+management protocols (e.g., NETCONF, RESTCONF) for retrieval operations only.
 
 In large-scale inventories containing numerous network elements and
 components, querying location associations can impose a load on the server.
@@ -304,10 +301,7 @@ and that valid-until is either omitted or holds a future time. Once valid-until
 has elapsed, the location record MUST be considered stale and MUST NOT be used
 for operational decisions.
 
-A distinct read-write "location-planning" container may be introduced
-in future revisions to support intent-based configuration, where OSS provides
-planning-level location targets. This capability is outside the scope of the
-document.
+Intent-based configuration of location information is outside the scope of this document.
 
 # Security Considerations
 
@@ -317,8 +311,8 @@ The "ietf-ni-location" YANG module defines a data model that is
 designed to be accessed via YANG-based management protocols, such as
 Network Configuration Protocol (NETCONF) {{!RFC6241}}
 and RESTCONF {{!RFC8040}}.  These YANG-based management protocols (1) have to
-use a secure transport layer (e.g., Secure Shell (SSH) {{!RFC6242}}, TLS {{!RFC9846}}, and
-QUIC {{!RFC9000}}) and (2) have to use mutual authentication
+use a secure transport layer (e.g., Secure Shell (SSH) {{?RFC6242}}, TLS {{?RFC9846}}, and
+QUIC {{?RFC9000}}) and (2) have to use mutual authentication
 (e.g., for SSH, the SSH Authentication Protocol {{?RFC4252}}).
 
 The Network Configuration Access Control Model (NACM) {{!RFC8341}}
@@ -332,11 +326,11 @@ important to control read access (e.g., via get, get-config, or
 notification) to these data nodes. Specifically, the following
 subtrees and data nodes have particular sensitivities/vulnerabilities:
 
-"/nilo:locations": This subtree reports physical deployment
+"/nwi:network-inventory/nilo:locations": This subtree reports physical deployment
 information including facility structures (sites, buildings, rooms),
 and optionally geographic coordinates.
 
-"/nilo:racks": This subtree reports rack physical attributes
+"/nwi:network-inventory/nilo:racks": This subtree reports rack physical attributes
 (dimensions, power capacity, security classification).
 
 Both subtrees reference network elements and components by their inventory
@@ -443,7 +437,6 @@ During the discussion of base Network Inventory (NI) model, it is agreed
 that the definition of the equipment room and rack can be a separate
 location model and support manual configuration, while the NI model
 aggregates the inventory data of the Network Elements (NEs) on the
-network. Usually the information about sites or equipment rooms is
-not detectable by network controller and configured manually.
+network.
 
 The authors wish to thank Mohamed Boucadair and many others for their helpful comments and suggestions.
