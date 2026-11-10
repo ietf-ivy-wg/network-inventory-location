@@ -286,7 +286,7 @@ maintains the data and serves as its source of truth. Location records can be po
 by automated tooling including RFID and geolocation services, or via manual
 entry through the authoritative system’s interfaces. External management
 applications consume this data as operational state using YANG-based
-management protocols, such as NETCONF, RESTCONF, for retrieval operations only.
+management protocols, such as NETCONF or RESTCONF, for retrieval operations only.
 The mechanisms for manual configuration of these location records within
 the authoritative system are outside the scope of this document.
 
