@@ -86,6 +86,7 @@ The Network Inventory location model is classified as a network model (Section 3
 
 The model provides a read-only view of location data maintained by an authoritative management system,
 covering physical location entities (sites, rooms, racks), NEs, and hardware components physically deployed in the live network.
+It captures the current known placement state; NEs, racks, and location containers are not assumed to be permanently fixed and may be relocated.
 Warehouse spares, inactive assets, and planned but undeployed sites are out of scope.
 Details on the source and update semantics of location records are provided in {{sec-operation}}.
 
