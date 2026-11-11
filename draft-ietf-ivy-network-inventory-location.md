@@ -284,7 +284,8 @@ location-to-asset and asset-to-location relationships.
 
 For a given location data, the authoritative management system (e.g., a network controller)
 maintains the data and serves as its source of truth. Location records can be populated
-by automated tooling including RFID and geolocation services, or via manual
+by automated tooling including RFID (Radio Frequency	 		
+   IDentification) and geolocation services, or via manual
 entry through the authoritative system’s interfaces. External management
 applications consume this data as operational state using YANG-based
 management protocols, such as NETCONF or RESTCONF, for retrieval operations only.
@@ -336,16 +337,12 @@ and optionally geographic coordinates.
 "/nwi:network-inventory/nilo:racks": This subtree reports rack physical attributes
 (dimensions, power capacity, security classification).
 
-Both subtrees reference network elements and components by their inventory
-identifiers (ne-id, component-id). Uncontrolled disclosure may:
-*  Enable association of inventory identifiers with physical facility
-   structures and geographic coordinates
-*  Reveal facility layouts, equipment density, and rack physical
-   security characteristics when combined with other network data
-*  Expose precise geographic coordinates (when configured), which may
-   facilitate physical location identification
-*  Indicate physical protection levels through rack security
-   classifications
+Both subtrees reference network elements and components by their inventory identifiers (ne-id, component-id). Uncontrolled disclosure may:
+
+* Enable association of inventory identifiers with physical facility structures and geographic coordinates
+* Reveal facility layouts, equipment density, and rack physical security characteristics when combined with other network data
+* Expose precise geographic coordinates (when configured), which may facilitate physical location identification
+* Indicate physical protection levels through rack security classifications
 
 The "ietf-ni-location" YANG module augments the base network inventory
 model defined in {{!I-D.ietf-ivy-network-inventory-yang}}. All security
