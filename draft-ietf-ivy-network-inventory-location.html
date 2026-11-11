@@ -1922,7 +1922,8 @@ site capacity planning, and physical asset verification by querying
 location-to-asset and asset-to-location relationships.<a href="#section-6-1" class="pilcrow">¶</a></p>
 <p id="section-6-2">For a given location data, the authoritative management system (e.g., a network controller)
 maintains the data and serves as its source of truth. Location records can be populated
-by automated tooling including RFID and geolocation services, or via manual
+by automated tooling including RFID (Radio Frequency                  <br>
+   IDentification) and geolocation services, or via manual
 entry through the authoritative system’s interfaces. External management
 applications consume this data as operational state using YANG-based
 management protocols, such as NETCONF or RESTCONF, for retrieval operations only.
@@ -1969,19 +1970,24 @@ information including facility structures (sites, buildings, rooms),
 and optionally geographic coordinates.<a href="#section-7-5" class="pilcrow">¶</a></p>
 <p id="section-7-6">"/nwi:network-inventory/nilo:racks": This subtree reports rack physical attributes
 (dimensions, power capacity, security classification).<a href="#section-7-6" class="pilcrow">¶</a></p>
-<p id="section-7-7">Both subtrees reference network elements and components by their inventory
-identifiers (ne-id, component-id). Uncontrolled disclosure may:
-*  Enable association of inventory identifiers with physical facility
-   structures and geographic coordinates
-*  Reveal facility layouts, equipment density, and rack physical
-   security characteristics when combined with other network data
-*  Expose precise geographic coordinates (when configured), which may
-   facilitate physical location identification
-*  Indicate physical protection levels through rack security
-   classifications<a href="#section-7-7" class="pilcrow">¶</a></p>
-<p id="section-7-8">The "ietf-ni-location" YANG module augments the base network inventory
+<p id="section-7-7">Both subtrees reference network elements and components by their inventory identifiers (ne-id, component-id). Uncontrolled disclosure may:<a href="#section-7-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-7-8.1">
+          <p id="section-7-8.1.1">Enable association of inventory identifiers with physical facility structures and geographic coordinates<a href="#section-7-8.1.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-8.2">
+          <p id="section-7-8.2.1">Reveal facility layouts, equipment density, and rack physical security characteristics when combined with other network data<a href="#section-7-8.2.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-8.3">
+          <p id="section-7-8.3.1">Expose precise geographic coordinates (when configured), which may facilitate physical location identification<a href="#section-7-8.3.1" class="pilcrow">¶</a></p>
+</li>
+        <li class="normal" id="section-7-8.4">
+          <p id="section-7-8.4.1">Indicate physical protection levels through rack security classifications<a href="#section-7-8.4.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-7-9">The "ietf-ni-location" YANG module augments the base network inventory
 model defined in <span>[<a href="#I-D.ietf-ivy-network-inventory-yang" class="cite xref">I-D.ietf-ivy-network-inventory-yang</a>]</span>. All security
-considerations specified in the base model apply to this extension module.<a href="#section-7-8" class="pilcrow">¶</a></p>
+considerations specified in the base model apply to this extension module.<a href="#section-7-9" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
